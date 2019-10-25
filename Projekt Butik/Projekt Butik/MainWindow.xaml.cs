@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.IO;
 
 namespace Projekt_Butik
 {
@@ -152,5 +153,11 @@ namespace Projekt_Butik
             };
             return image;
         }
+    }
+
+    public class Product
+    {
+        string brand;
+
     }
 }
