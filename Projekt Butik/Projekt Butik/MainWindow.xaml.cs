@@ -202,14 +202,29 @@ namespace Projekt_Butik
                     MessageBox.Show("Felaktig inmatning, kontrollera rad " + i + " i productlist.txt");
                     Environment.Exit(0);
                 }
-                Product p = new Product
+                if(temp.Length < 4)
                 {
-                    brand = temp[0],
-                    info = temp[1],
-                    price = int.Parse(temp[2]),
-                    soruce = new BitmapImage(new Uri("/pics/" + temp[3], UriKind.Relative))
-                };
-                productlist.Add(p);
+                    Product p = new Product
+                    {
+                        brand = temp[0],
+                        info = temp[1],
+                        price = int.Parse(temp[2]),
+                        soruce = new BitmapImage(new Uri("/pics/error.jpg", UriKind.Relative))
+                    };
+                    productlist.Add(p);
+                }
+                else
+                {
+                    Product p = new Product
+                    {
+                        brand = temp[0],
+                        info = temp[1],
+                        price = int.Parse(temp[2]),
+                        soruce = new BitmapImage(new Uri("/pics/" + temp[3], UriKind.Relative))
+                    };
+                    productlist.Add(p);
+                }
+                
             }
         }
     }

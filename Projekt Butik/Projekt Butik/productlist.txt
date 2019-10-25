@@ -1,4 +1,4 @@
-Ibanez;Super 7 string guitar;11200;error.jpg
+Ibanez;Super 7 string guitar;11200;
 ﻿Fender;Stratocaster American Professional - Svart;17000;stratasvart.jpg
 Fender;Stratocaster - Jimi Hendrix Tribute Model - Vit;55000;stratajimi.jpg
 Gibson;Les Paul Standard 60´s - Svart;16750;lespaulsvart.jpg
