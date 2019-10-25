@@ -1,4 +1,4 @@
-﻿Fender;Stratocaster American Professional - Svart;abc;stratasvart.jpg
+﻿Fender;Stratocaster American Professional - Svart;10000;stratasvart.jpg
 Fender;Stratocaster - Jimi Hendrix Tribute Model - Vit;55000;stratajimi.jpg
 Gibson;Les Paul Standard 60´s - Svart;16750;lespaulsvart.jpg
 Gibson;SG Standard - Röd;11000;gibsonsg.jpg

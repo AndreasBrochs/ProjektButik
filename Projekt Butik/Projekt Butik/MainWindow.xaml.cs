@@ -25,8 +25,12 @@ namespace Projekt_Butik
         WrapPanel wrapPanel;
         TextBox header;
         ListBox productsListBox;
+        ListBox tempCart;
         TextBox nrProducts;
+        TextBox discount;
         Button addRemove;
+        
+
         public List<Product> productlist;
 
         private Thickness defaultMargin = new Thickness(5);
@@ -90,15 +94,48 @@ namespace Projekt_Butik
             Grid.SetRow(productsListBox, 2);
             Grid.SetRowSpan(productsListBox, 6);
 
-            Image productImage = CreateImage("gibsonsg.jpg");
+            Image productImage = CreateImage(productlist[2].soruce.ToString());
             grid.Children.Add(productImage);
-            Grid.SetColumn(productImage, 4);
-            Grid.SetRow(productImage, 3);
+            Grid.SetColumn(productImage, 2);
+            Grid.SetColumnSpan(productImage, 2);
+            Grid.SetRow(productImage, 2);
+            Grid.SetRowSpan(productImage, 6);
+
+            tempCart = new ListBox
+            {
+                Margin = defaultMargin
+            };
+            grid.Children.Add(tempCart);
+            Grid.SetColumn(tempCart, 4);
+            Grid.SetColumnSpan(tempCart, 2);
+            Grid.SetRow(tempCart, 2);
+            Grid.SetRowSpan(tempCart, 4);
+            tempCart.Items.Add("Test cart");
+
+            Label discountLabel = new Label
+            {
+                Content = "Discount code:",
+                HorizontalAlignment = HorizontalAlignment.Right,
+                VerticalAlignment = VerticalAlignment.Center
+            };
+            grid.Children.Add(discountLabel);
+            Grid.SetColumn(discountLabel, 4);
+            Grid.SetRow(discountLabel, 6);
 
         }
         public void Controlls()
         {
-            wrapPanel = new WrapPanel //wrappanel for the controlls adding/removing produkts to the cart
+
+            discount = new TextBox
+            {
+                Text = "enter code here",
+                Margin = new Thickness(10)
+            };
+            grid.Children.Add(discount);
+            Grid.SetColumn(discount, 5);
+            Grid.SetRow(discount, 6);
+
+            wrapPanel = new WrapPanel //wrappanel for the controlls adding/removing products to the cart
             {
                 Orientation = Orientation.Horizontal
             };
@@ -131,6 +168,7 @@ namespace Projekt_Butik
                 Padding = new Thickness(10)
             };
             wrapPanel.Children.Add(addRemove);
+
             addRemove = new Button
             {
                 Content = "Add to cart",
@@ -138,6 +176,8 @@ namespace Projekt_Butik
                 Padding = new Thickness(10)
             };
             wrapPanel.Children.Add(addRemove);
+
+
         }
         private Image CreateImage(string filePath)
         {
