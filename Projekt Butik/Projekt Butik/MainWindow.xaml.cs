@@ -66,6 +66,8 @@ namespace Projekt_Butik
             grid.Children.Add(header);
             Grid.SetRowSpan(header, 2);
             Grid.SetColumnSpan(header, 6);
+
+            //hej
         }
     }
 }
