@@ -22,6 +22,10 @@ namespace Projekt_Butik
     {
         Grid grid;
         Button button;
+        TextBox header;
+
+        private Thickness defaultMargin = new Thickness(5);
+
 
         public MainWindow()
         {
@@ -30,20 +34,38 @@ namespace Projekt_Butik
         }
         public void Start()
         {
+            Layout();
+        }
+        public void Layout()
+        {
             grid = (Grid)Content;
 
-            for (int i = 0; i<6;i++) 
+
+            for (int i = 0; i < 6; i++)
             {
-            grid.ColumnDefinitions.Add(new ColumnDefinition());
+                grid.ColumnDefinitions.Add(new ColumnDefinition());
             }
 
-            for (int i = 0; i < 10;i++) 
+            for (int i = 0; i < 10; i++)
             {
                 grid.RowDefinitions.Add(new RowDefinition());
             }
 
-           
-
+            header = new TextBox
+            {
+                Text = "Welcome to the store!",
+                TextAlignment = TextAlignment.Center,
+                FontSize = 20,
+                FontFamily = new FontFamily("Verdana"),
+                Margin = defaultMargin,
+                Padding = defaultMargin,
+                VerticalAlignment = VerticalAlignment.Stretch,
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                Background = Brushes.LightBlue
+            };
+            grid.Children.Add(header);
+            Grid.SetRowSpan(header, 2);
+            Grid.SetColumnSpan(header, 6);
         }
     }
 }
