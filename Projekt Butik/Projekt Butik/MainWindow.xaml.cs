@@ -23,7 +23,6 @@ namespace Projekt_Butik
     {
         Grid grid;
         WrapPanel wrapPanel;
-        Button button;
         TextBox header;
         ListBox productsListBox;
         TextBox nrProducts;
@@ -43,12 +42,12 @@ namespace Projekt_Butik
             Title = "Guitar store";
             Width = 900;
             Height = 600;
-            Layout();
+            BasicLayout();
+            Controlls();
         }
-        public void Layout()
+        public void BasicLayout()
         {
             grid = (Grid)Content;
-
 
             for (int i = 0; i < 6; i++)
             {
@@ -86,11 +85,18 @@ namespace Projekt_Butik
             productsListBox.Items.Add("Test product3");
             productsListBox.Items.Add("Test product4");
             Grid.SetColumn(productsListBox, 0);
-            Grid.SetColumnSpan(productsListBox, 3);
+            Grid.SetColumnSpan(productsListBox, 2);
             Grid.SetRow(productsListBox, 2);
             Grid.SetRowSpan(productsListBox, 6);
 
+            Image productImage = CreateImage("gibsonsg.jpg");
+            grid.Children.Add(productImage);
+            Grid.SetColumn(productImage, 4);
+            Grid.SetRow(productImage, 3);
 
+        }
+        public void Controlls()
+        {
             wrapPanel = new WrapPanel //wrappanel for the controlls adding/removing produkts to the cart
             {
                 Orientation = Orientation.Horizontal
@@ -106,7 +112,7 @@ namespace Projekt_Butik
                 Content = "+",
                 Margin = defaultMargin,
                 Padding = new Thickness(10)
-                
+
             };
             wrapPanel.Children.Add(addRemove);
 
@@ -135,7 +141,18 @@ namespace Projekt_Butik
 
             };
             wrapPanel.Children.Add(addRemove);
-
+        }
+        private Image CreateImage(string filePath)
+        {
+            ImageSource source = new BitmapImage(new Uri(filePath, UriKind.Relative));
+            Image image = new Image
+            {
+                Source = source,
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                VerticalAlignment = VerticalAlignment.Stretch,
+                Margin = defaultMargin
+            };
+            return image;
         }
 
         public void CreateProducts()
