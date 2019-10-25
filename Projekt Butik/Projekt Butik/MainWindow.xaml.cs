@@ -21,8 +21,11 @@ namespace Projekt_Butik
     public partial class MainWindow : Window
     {   
         Grid grid;
+        WrapPanel wrapPanel;
         Button button;
         TextBox header;
+        ListBox productsListBox;
+        TextBox nrProducts;
 
         private Thickness defaultMargin = new Thickness(5);
 
@@ -34,11 +37,15 @@ namespace Projekt_Butik
         }
         public void Start()
         {
+            Title = "Guitar store";
+            Width = 900;
+            Height = 600;
             Layout();
         }
         public void Layout()
         {
             grid = (Grid)Content;
+            grid.Children.Add(wrapPanel);
 
 
             for (int i = 0; i < 6; i++)
@@ -67,7 +74,31 @@ namespace Projekt_Butik
             Grid.SetRowSpan(header, 2);
             Grid.SetColumnSpan(header, 6);
 
-            
+            productsListBox = new ListBox
+            {
+                Margin = defaultMargin
+            };
+            grid.Children.Add(productsListBox);
+            productsListBox.Items.Add("Test produkt1");
+            productsListBox.Items.Add("Test produkt2");
+            productsListBox.Items.Add("Test produkt3");
+            productsListBox.Items.Add("Test produkt4");
+            Grid.SetColumn(productsListBox, 0);
+            Grid.SetColumnSpan(productsListBox, 3);
+            Grid.SetRow(productsListBox, 2);
+            Grid.SetRowSpan(productsListBox, 6);
+
+            Grid.SetColumn(wrapPanel, 0);
+            Grid.SetColumnSpan(wrapPanel, 6);
+            Grid.SetRow(wrapPanel, 7);
+            nrProducts = new TextBox
+            {
+                Text = "1"
+            };
+            wrapPanel.Children.Add(nrProducts);
+
+
+
         }
     }
 }
