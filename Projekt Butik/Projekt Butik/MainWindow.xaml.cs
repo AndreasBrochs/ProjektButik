@@ -90,7 +90,7 @@ namespace Projekt_Butik
             Grid.SetRow(productsListBox, 2);
             Grid.SetRowSpan(productsListBox, 6);
 
-            Image productImage = CreateImage("gibsonsg.jpg");
+            Image productImage = CreateImage(productlist[1].soruce.ToString());
             grid.Children.Add(productImage);
             Grid.SetColumn(productImage, 4);
             Grid.SetRow(productImage, 3);
@@ -165,19 +165,35 @@ namespace Projekt_Butik
                     int errorTest = int.Parse(temp[2]);
                 }
                 catch
-                { i++;
+                {   i++;
                     MessageBox.Show("Felaktig inmatning, kontrollera rad " + i + " i productlist.txt");
                     Environment.Exit(0);
                 }
-                Product p = new Product
+                if(temp.Length < 4)
                 {
-                    brand = temp[0],
-                    info = temp[1],
-                    price = int.Parse(temp[2]),
-                    soruce = new BitmapImage(new Uri("/pics/"+temp[3], UriKind.Relative))
-                };
+                    Product p = new Product
+                    {
+                        brand = temp[0],
+                        info = temp[1],
+                        price = int.Parse(temp[2]),
+                        soruce = new BitmapImage(new Uri("/pics/error.jpg", UriKind.Relative))
+                    };
+                    productlist.Add(p);
+                }
+                else
+                {
+                    Product p = new Product
+                    {
+                        brand = temp[0],
+                        info = temp[1],
+                        price = int.Parse(temp[2]),
+                        soruce = new BitmapImage(new Uri("/pics/" + temp[3], UriKind.Relative))
+                    };
+                    productlist.Add(p);
+                }
+                
 
-                productlist.Add(p);
+                
             }
         }
     }

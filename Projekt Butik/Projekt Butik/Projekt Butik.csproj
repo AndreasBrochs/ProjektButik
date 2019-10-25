@@ -86,6 +86,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <Resource Include="pics\error.jpg" />
     <Content Include="productlist.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
