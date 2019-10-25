@@ -19,7 +19,7 @@ namespace Projekt_Butik
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
-    {   //Hallå
+    {   
         Grid grid;
         Button button;
         TextBox header;
@@ -67,7 +67,7 @@ namespace Projekt_Butik
             Grid.SetRowSpan(header, 2);
             Grid.SetColumnSpan(header, 6);
 
-            //hej
+            
         }
     }
 }
