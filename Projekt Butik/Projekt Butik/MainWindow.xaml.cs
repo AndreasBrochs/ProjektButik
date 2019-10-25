@@ -90,7 +90,7 @@ namespace Projekt_Butik
             Grid.SetRow(productsListBox, 2);
             Grid.SetRowSpan(productsListBox, 6);
 
-            Image productImage = CreateImage(productlist[1].soruce.ToString());
+            Image productImage = CreateImage(productlist[2].soruce.ToString());
             grid.Children.Add(productImage);
             Grid.SetColumn(productImage, 4);
             Grid.SetRow(productImage, 3);
