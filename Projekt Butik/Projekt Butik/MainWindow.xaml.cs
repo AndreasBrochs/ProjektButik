@@ -113,7 +113,6 @@ namespace Projekt_Butik
                 Content = "+",
                 Margin = defaultMargin,
                 Padding = new Thickness(10)
-
             };
             wrapPanel.Children.Add(addRemove);
 
@@ -122,7 +121,6 @@ namespace Projekt_Butik
                 Text = "1",
                 Margin = defaultMargin,
                 Padding = new Thickness(10)
-
             };
             wrapPanel.Children.Add(nrProducts);
 
@@ -131,7 +129,6 @@ namespace Projekt_Butik
                 Content = "-",
                 Margin = defaultMargin,
                 Padding = new Thickness(10)
-
             };
             wrapPanel.Children.Add(addRemove);
             addRemove = new Button
@@ -139,7 +136,6 @@ namespace Projekt_Butik
                 Content = "Add to cart",
                 Margin = defaultMargin,
                 Padding = new Thickness(10)
-
             };
             wrapPanel.Children.Add(addRemove);
         }
