@@ -35,6 +35,7 @@ namespace Projekt_Butik
         public MainWindow()
         {
             InitializeComponent();
+            CreateProducts();
             Start();
         }
         public void Start()
@@ -158,6 +159,7 @@ namespace Projekt_Butik
         public void CreateProducts()
         {
             string[] path = File.ReadAllLines("productlist.txt");
+            productlist = new List<Product>();
             for(int i = 0; i < path.Length-1; i++)
             {
                 
@@ -177,9 +179,9 @@ namespace Projekt_Butik
                     info = temp[1],
                     price = int.Parse(temp[2]),
                     soruce = new BitmapImage(new Uri("/pics/"+temp[3], UriKind.Relative))
-            };
-                
-                
+                };
+
+                productlist.Add(p);
             }
         }
     }
