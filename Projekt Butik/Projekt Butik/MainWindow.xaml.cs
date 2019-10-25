@@ -27,6 +27,7 @@ namespace Projekt_Butik
         ListBox productsListBox;
         TextBox nrProducts;
         Button addRemove;
+        public List<Product> productlist;
 
         private Thickness defaultMargin = new Thickness(5);
 
@@ -149,11 +150,41 @@ namespace Projekt_Butik
             };
             return image;
         }
+
+        public void CreateProducts()
+        {
+            string[] path = File.ReadAllLines("productlist.txt");
+            for(int i = 0; i < path.Length-1; i++)
+            {
+                
+                string[] temp = path[i].Split(';');
+                try
+                {
+                    int errorTest = int.Parse(temp[2]);
+                }
+                catch
+                { i++;
+                    MessageBox.Show("Felaktig inmatning, kontrollera rad " + i + " i productlist.txt");
+                    Environment.Exit(0);
+                }
+                Product p = new Product
+                {
+                    brand = temp[0],
+                    info = temp[1],
+                    price = int.Parse(temp[2]),
+                    soruce = new BitmapImage(new Uri("/pics/"+temp[3], UriKind.Relative))
+            };
+                
+                
+            }
+        }
     }
 
     public class Product
     {
-        string brand;
-
+        public string brand;
+        public string info;
+        public int price;
+        public ImageSource soruce;
     }
 }
