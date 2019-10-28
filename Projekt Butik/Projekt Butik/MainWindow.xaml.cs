@@ -129,6 +129,7 @@ namespace Projekt_Butik
                 Padding = defaultMargin
             };
             wrapPanel.Children.Add(addRemove);
+            addRemove.Click += RemoveProduct_Click;
 
             addRemove = new Button
             {
@@ -137,6 +138,28 @@ namespace Projekt_Butik
                 Padding = defaultMargin
             };
             wrapPanel.Children.Add(addRemove);
+            addRemove.Click += EmptyCart_Click;
+
+            addRemove = new Button
+            {
+                Content = "Save Cart",
+                Margin = defaultMargin,
+                Padding = defaultMargin
+            };
+            wrapPanel.Children.Add(addRemove);
+            addRemove.Click += SaveCart_Click;
+        }
+        private void SaveCart_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+        private void EmptyCart_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+        private void RemoveProduct_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
         }
         public void ControllsBuy()
         {
@@ -174,6 +197,7 @@ namespace Projekt_Butik
                 Margin = defaultMargin
             };
             wrapPanel.Children.Add(addRemove);
+            addRemove.Click += Discount_Click;
             wrapPanel = new WrapPanel //wrappanel for the controlls under the cart, minus the discount
             {
                 Orientation = Orientation.Horizontal
@@ -199,6 +223,15 @@ namespace Projekt_Butik
                 Padding = new Thickness(10)
             };
             wrapPanel.Children.Add(addRemove);
+            addRemove.Click += Buy_Click;
+        }
+        private void Buy_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+        private void Discount_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
         }
         public void ControllsProductsInStore()
         {
@@ -219,6 +252,7 @@ namespace Projekt_Butik
                 Padding = new Thickness(10)
             };
             wrapPanel.Children.Add(addRemove);
+            addRemove.Click += PlusProduct_Click;
 
             nrProducts = new TextBox
             {
@@ -235,6 +269,7 @@ namespace Projekt_Butik
                 Padding = new Thickness(10)
             };
             wrapPanel.Children.Add(addRemove);
+            addRemove.Click += MinusProduct_Click;
 
             addRemove = new Button
             {
@@ -243,6 +278,19 @@ namespace Projekt_Butik
                 Padding = new Thickness(10)
             };
             wrapPanel.Children.Add(addRemove);
+            addRemove.Click += AddToCart_Click;
+        }
+        private void AddToCart_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+        private void MinusProduct_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+        private void PlusProduct_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
         }
         private Image CreateImage(string filePath)
         {
