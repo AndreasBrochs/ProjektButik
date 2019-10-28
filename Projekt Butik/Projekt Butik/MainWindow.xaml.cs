@@ -24,7 +24,7 @@ namespace Projekt_Butik
         WrapPanel wrapPanel;
         TextBox header;
         ListBox productsListBox;
-        ListBox tempCart;
+        ListBox showCart;
         TextBox nrProducts;
         TextBox discount;
         Button addRemove;
@@ -99,16 +99,16 @@ namespace Projekt_Butik
             Grid.SetRow(productImage, 2);
             Grid.SetRowSpan(productImage, 6);
 
-            tempCart = new ListBox
+            showCart = new ListBox
             {
                 Margin = defaultMargin
             };
-            grid.Children.Add(tempCart);
-            Grid.SetColumn(tempCart, 4);
-            Grid.SetColumnSpan(tempCart, 2);
-            Grid.SetRow(tempCart, 2);
-            Grid.SetRowSpan(tempCart, 4);
-            tempCart.Items.Add("Test cart");
+            grid.Children.Add(showCart);
+            Grid.SetColumn(showCart, 4);
+            Grid.SetColumnSpan(showCart, 2);
+            Grid.SetRow(showCart, 2);
+            Grid.SetRowSpan(showCart, 4);
+            showCart.Items.Add("Test cart");
         }
         public void ControllsCart()
         {
@@ -258,7 +258,8 @@ namespace Projekt_Butik
             {
                 Text = "1",
                 Margin = defaultMargin,
-                Padding = new Thickness(10)
+                Padding = new Thickness(10),
+                Width = 40
             };
             wrapPanel.Children.Add(nrProducts);
 
@@ -266,7 +267,7 @@ namespace Projekt_Butik
             {
                 Content = "-",
                 Margin = defaultMargin,
-                Padding = new Thickness(10)
+                Padding = new Thickness(10),
             };
             wrapPanel.Children.Add(addRemove);
             addRemove.Click += MinusProduct_Click;
@@ -286,20 +287,34 @@ namespace Projekt_Butik
         }
         private void MinusProduct_Click(object sender, RoutedEventArgs e)
         {
-            int i = int.Parse(nrProducts.Text);
-            if (i != 0)
+            try
             {
-            i--;
-            string count = i.ToString();
-            nrProducts.Text = count;
+                int i = int.Parse(nrProducts.Text);
+                if (i != 0)
+                {
+                    i--;
+                    string count = i.ToString();
+                    nrProducts.Text = count;
+                }
+            }
+            catch
+            {
+                MessageBox.Show("You must enter a number");
             }
         }
         private void PlusProduct_Click(object sender, RoutedEventArgs e)
         {
-            int i = int.Parse(nrProducts.Text);
-            i++;
-            string count = i.ToString();
-            nrProducts.Text = count;
+            try
+            {
+                int i = int.Parse(nrProducts.Text);
+                i++;
+                string count = i.ToString();
+                nrProducts.Text = count;
+            }
+            catch
+            {
+                MessageBox.Show("You must enter a number");
+            }
         }
         private Image CreateImage(string filePath)
         {
@@ -345,23 +360,23 @@ namespace Projekt_Butik
                 }
                 else
                 {
-                        Product p = new Product
-                        {
-                            brand = temp[0],
-                            info = temp[1],
-                            price = int.Parse(temp[2]),
-                            soruce = new BitmapImage(new Uri("/pics/" + temp[3], UriKind.Relative))
-                        };
-                        productlist.Add(p);
-                    } 
-                }  
+                    Product p = new Product
+                    {
+                        brand = temp[0],
+                        info = temp[1],
+                        price = int.Parse(temp[2]),
+                        soruce = new BitmapImage(new Uri("/pics/" + temp[3], UriKind.Relative))
+                    };
+                    productlist.Add(p);
+                }
             }
         }
     }
-    public class Product
-    {
-        public string brand;
-        public string info;
-        public int price;
-        public ImageSource soruce;
-    }
+}
+public class Product
+{
+    public string brand;
+    public string info;
+    public int price;
+    public ImageSource soruce;
+}
