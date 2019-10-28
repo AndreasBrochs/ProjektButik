@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,7 +14,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.IO;
 namespace Projekt_Butik
 {
     /// <summary>
@@ -21,6 +22,7 @@ namespace Projekt_Butik
     public partial class MainWindow : Window
     {
         Grid grid;
+        DataGrid dataGrid;
         WrapPanel wrapPanel;
         TextBox header;
         ListBox productsListBox;
@@ -29,6 +31,7 @@ namespace Projekt_Butik
         TextBox discount;
         Button addRemove;
         TextBlock totalPrice;
+        DataTable dataTable;
 
 
         public List<Product> productlist;
@@ -54,6 +57,10 @@ namespace Projekt_Butik
         public void BasicLayout()
         {
             grid = (Grid)Content;
+            dataGrid = new DataGrid();
+            
+            
+            
             for (int i = 0; i < 6; i++)
             {
                 grid.ColumnDefinitions.Add(new ColumnDefinition());
@@ -77,23 +84,40 @@ namespace Projekt_Butik
             grid.Children.Add(header);
             Grid.SetRowSpan(header, 2);
             Grid.SetColumnSpan(header, 6);
-            productsListBox = new ListBox
+            //productsListBox = new ListBox
+            //{
+            //    Margin = defaultMargin
+            //};
+            //grid.Children.Add(productsListBox);
+            ////productsListBox.Items.Add("Test product1");
+            ////productsListBox.Items.Add("Test product2");
+            ////productsListBox.Items.Add("Test product3");
+            ////productsListBox.Items.Add("Test product4");
+            //foreach(string s in listBoxProducts)
+            //{
+            //    productsListBox.Items.Add(s);
+            //}
+            dataTable = new DataTable();
+            dataTable.Columns.Add(new DataColumn("Brand", typeof(string)));
+            dataTable.Columns.Add(new DataColumn("Info", typeof(string)));
+            dataTable.Columns.Add(new DataColumn("Price", typeof(int)));
+            for(int i = 0; i < productlist.Count; i++)
             {
-                Margin = defaultMargin
-            };
-            grid.Children.Add(productsListBox);
-            //productsListBox.Items.Add("Test product1");
-            //productsListBox.Items.Add("Test product2");
-            //productsListBox.Items.Add("Test product3");
-            //productsListBox.Items.Add("Test product4");
-            foreach(string s in listBoxProducts)
-            {
-                productsListBox.Items.Add(s);
+                string brand = productlist[i].brand;
+                string info = productlist[i].info;
+                int price = productlist[i].price;
+                dataTable.Rows.Add(new object[] { brand, info, price });
             }
-            Grid.SetColumn(productsListBox, 0);
-            Grid.SetColumnSpan(productsListBox, 2);
-            Grid.SetRow(productsListBox, 2);
-            Grid.SetRowSpan(productsListBox, 6);
+            grid.Children.Add(dataGrid);
+            Grid.SetColumn(dataGrid, 0);
+            Grid.SetColumnSpan(dataGrid, 2);
+            Grid.SetRow(dataGrid, 2);
+            Grid.SetRowSpan(dataGrid, 6);
+            dataGrid.ItemsSource = dataTable.DefaultView;
+
+
+
+
 
             Image productImage = CreateImage(productlist[2].soruce.ToString());
             grid.Children.Add(productImage);
