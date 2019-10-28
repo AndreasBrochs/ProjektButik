@@ -97,10 +97,13 @@ namespace Projekt_Butik
             //{
             //    productsListBox.Items.Add(s);
             //}
-            dataTable = new DataTable();
-            dataTable.Columns.Add(new DataColumn("Brand", typeof(string)));
-            dataTable.Columns.Add(new DataColumn("Info", typeof(string)));
-            dataTable.Columns.Add(new DataColumn("Price", typeof(int)));
+            dataTable = new DataTable
+            { 
+                
+            };
+            dataTable.Columns.AddRange(new DataColumn[3]
+            { new DataColumn ("Brand", typeof(string)), new DataColumn ("Info", typeof(string)), new DataColumn("Price", typeof(int))});
+            
             for(int i = 0; i < productlist.Count; i++)
             {
                 string brand = productlist[i].brand;
