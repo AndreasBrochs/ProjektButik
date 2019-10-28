@@ -286,11 +286,20 @@ namespace Projekt_Butik
         }
         private void MinusProduct_Click(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            int i = int.Parse(nrProducts.Text);
+            if (i != 0)
+            {
+            i--;
+            string count = i.ToString();
+            nrProducts.Text = count;
+            }
         }
         private void PlusProduct_Click(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            int i = int.Parse(nrProducts.Text);
+            i++;
+            string count = i.ToString();
+            nrProducts.Text = count;
         }
         private Image CreateImage(string filePath)
         {
