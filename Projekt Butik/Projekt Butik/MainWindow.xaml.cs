@@ -322,7 +322,7 @@ namespace Projekt_Butik
         {
             string[] path = File.ReadAllLines("productlist.txt");
             productlist = new List<Product>();
-            for (int i = 0; i < path.Length - 1; i++)
+            for (int i = 0; i < path.Length; i++)
             {
 
                 string[] temp = path[i].Split(';');
