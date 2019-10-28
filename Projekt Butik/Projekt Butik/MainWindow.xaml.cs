@@ -263,7 +263,8 @@ namespace Projekt_Butik
             {
                 Text = "1",
                 Margin = defaultMargin,
-                Padding = new Thickness(10)
+                Padding = new Thickness(10),
+                Width = 40
             };
             wrapPanel.Children.Add(nrProducts);
 
@@ -291,6 +292,8 @@ namespace Projekt_Butik
         }
         private void MinusProduct_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
             int i = int.Parse(nrProducts.Text);
             if (i != 0)
             {
@@ -298,13 +301,25 @@ namespace Projekt_Butik
             string count = i.ToString();
             nrProducts.Text = count;
             }
+            }
+            catch
+            {
+                MessageBox.Show("You must enter a number");
+            }
         }
         private void PlusProduct_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
             int i = int.Parse(nrProducts.Text);
             i++;
             string count = i.ToString();
             nrProducts.Text = count;
+            }
+            catch
+            {
+                MessageBox.Show("You must enter a number");
+            }
         }
         private Image CreateImage(string filePath)
         {
