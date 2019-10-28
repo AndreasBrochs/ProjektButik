@@ -26,7 +26,7 @@ namespace Projekt_Butik
         WrapPanel wrapPanel;
         TextBox header;
         ListBox productsListBox;
-        ListBox tempCart;
+        ListBox showCart;
         TextBox nrProducts;
         TextBox discount;
         Button addRemove;
@@ -131,16 +131,19 @@ namespace Projekt_Butik
             Grid.SetRow(productImage, 2);
             Grid.SetRowSpan(productImage, 6);
 
-            tempCart = new ListBox
+            showCart = new ListBox
             {
                 Margin = defaultMargin
             };
-            grid.Children.Add(tempCart);
-            Grid.SetColumn(tempCart, 4);
-            Grid.SetColumnSpan(tempCart, 2);
-            Grid.SetRow(tempCart, 2);
-            Grid.SetRowSpan(tempCart, 4);
-            tempCart.Items.Add("Test cart");
+            grid.Children.Add(showCart);
+            Grid.SetColumn(showCart, 4);
+            Grid.SetColumnSpan(showCart, 2);
+            Grid.SetRow(showCart, 2);
+            Grid.SetRowSpan(showCart, 4);
+            showCart.Items.Add("Test cart1");
+            showCart.Items.Add("Test cart2");
+            showCart.Items.Add("Test cart3");
+            showCart.Items.Add("Test cart4");
         }
         public void ControllsCart()
         {
@@ -187,11 +190,11 @@ namespace Projekt_Butik
         }
         private void EmptyCart_Click(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            showCart.Items.Clear();
         }
         private void RemoveProduct_Click(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            showCart.Items.Remove(showCart.SelectedItem);
         }
         public void ControllsBuy()
         {
