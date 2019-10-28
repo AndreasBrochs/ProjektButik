@@ -1,2 +1,2 @@
-abc123;500
-atudent19;1000
+abc123;100
+student19;500

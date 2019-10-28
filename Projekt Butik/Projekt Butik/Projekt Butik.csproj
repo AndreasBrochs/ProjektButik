@@ -89,6 +89,9 @@
     <Resource Include="pics\error.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="discount.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Content Include="productlist.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

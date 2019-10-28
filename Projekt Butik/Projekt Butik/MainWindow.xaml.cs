@@ -36,12 +36,14 @@ namespace Projekt_Butik
 
         public List<Product> productlist;
         public List<string> listBoxProducts;
+        public Dictionary<string, int> discountCodes;
 
         private Thickness defaultMargin = new Thickness(5);
         public MainWindow()
         {
             InitializeComponent();
             CreateProducts();
+            CreateDiscount();
             Start();
         }
         public void Start()
@@ -58,9 +60,9 @@ namespace Projekt_Butik
         {
             grid = (Grid)Content;
             dataGrid = new DataGrid();
-            
-            
-            
+
+
+
             for (int i = 0; i < 6; i++)
             {
                 grid.ColumnDefinitions.Add(new ColumnDefinition());
@@ -98,13 +100,13 @@ namespace Projekt_Butik
             //    productsListBox.Items.Add(s);
             //}
             dataTable = new DataTable
-            { 
-                
+            {
+
             };
             dataTable.Columns.AddRange(new DataColumn[3]
             { new DataColumn ("Brand", typeof(string)), new DataColumn ("Info", typeof(string)), new DataColumn("Price", typeof(int))});
-            
-            for(int i = 0; i < productlist.Count; i++)
+
+            for (int i = 0; i < productlist.Count; i++)
             {
                 string brand = productlist[i].brand;
                 string info = productlist[i].info;
@@ -266,7 +268,14 @@ namespace Projekt_Butik
         }
         private void Discount_Click(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            int amount = 0;
+            foreach(KeyValuePair<string,int> pair in discountCodes)
+            {
+                if (pair.Key == discount.Text)
+                {
+                    amount += pair.Value;
+                }
+            }
         }
         public void ControllsProductsInStore()
         {
@@ -324,13 +333,13 @@ namespace Projekt_Butik
         {
             try
             {
-            int i = int.Parse(nrProducts.Text);
-            if (i != 0)
-            {
-            i--;
-            string count = i.ToString();
-            nrProducts.Text = count;
-            }
+                int i = int.Parse(nrProducts.Text);
+                if (i != 0)
+                {
+                    i--;
+                    string count = i.ToString();
+                    nrProducts.Text = count;
+                }
             }
             catch
             {
@@ -341,10 +350,10 @@ namespace Projekt_Butik
         {
             try
             {
-            int i = int.Parse(nrProducts.Text);
-            i++;
-            string count = i.ToString();
-            nrProducts.Text = count;
+                int i = int.Parse(nrProducts.Text);
+                i++;
+                string count = i.ToString();
+                nrProducts.Text = count;
             }
             catch
             {
@@ -363,13 +372,23 @@ namespace Projekt_Butik
             };
             return image;
         }
+        public void CreateDiscount()
+        {
+            string[] path = File.ReadAllLines("discount.txt");
+            discountCodes = new Dictionary<string, int>();
+            for (int i = 0; i < path.Length; i++)
+            {
+                string[] temp = path[i].Split(';');
+                int tempNr = int.Parse(temp[1]);
+                discountCodes.Add(temp[0],tempNr);
+            }
+        }
         public void CreateProducts()
         {
             string[] path = File.ReadAllLines("productlist.txt");
             productlist = new List<Product>();
             for (int i = 0; i < path.Length; i++)
             {
-
                 string[] temp = path[i].Split(';');
                 try
                 {
@@ -395,26 +414,26 @@ namespace Projekt_Butik
                 }
                 else
                 {
-                        Product p = new Product
-                        {
-                            brand = temp[0],
-                            info = temp[1],
-                            price = int.Parse(temp[2]),
-                            soruce = new BitmapImage(new Uri("/pics/" + temp[3], UriKind.Relative))
-                        };
-                        productlist.Add(p);
-                    } 
+                    Product p = new Product
+                    {
+                        brand = temp[0],
+                        info = temp[1],
+                        price = int.Parse(temp[2]),
+                        soruce = new BitmapImage(new Uri("/pics/" + temp[3], UriKind.Relative))
+                    };
+                    productlist.Add(p);
                 }
+            }
 
             listBoxProducts = new List<string>();
             listBoxProducts = productlist.Select(p => p.brand + " " + p.info + " " + p.price).ToList();
-            }
         }
     }
-    public class Product
-    {
-        public string brand;
-        public string info;
-        public int price;
-        public ImageSource soruce;
-    }
+}
+public class Product
+{
+    public string brand;
+    public string info;
+    public int price;
+    public ImageSource soruce;
+}
