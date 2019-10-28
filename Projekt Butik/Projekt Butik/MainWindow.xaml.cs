@@ -332,8 +332,6 @@ namespace Projekt_Butik
                     Environment.Exit(0);
                 }
 
-
-
                 if (temp.Length < 4)
                 {
                     Product p = new Product
@@ -347,13 +345,6 @@ namespace Projekt_Butik
                 }
                 else
                 {
-                    ImageSource sorceCheck = new BitmapImage(new Uri("/pics/" + temp[3], UriKind.Relative));
-                    Image imageCheck = new Image
-                    {
-                        Source = sorceCheck
-                    };
-                    if (File.Exists(imageCheck.ToString()))
-                    {
                         Product p = new Product
                         {
                             brand = temp[0],
@@ -362,24 +353,8 @@ namespace Projekt_Butik
                             soruce = new BitmapImage(new Uri("/pics/" + temp[3], UriKind.Relative))
                         };
                         productlist.Add(p);
-                    }
-
-                    else
-                    {
-                        i++;
-                        MessageBox.Show("Felaktig bildfil, bilden kommer att ersättas med errorbilden. Kontrollera rad " + i + " i productlist.txt");
-                        Product p = new Product
-                        {
-                            brand = temp[0],
-                            info = temp[1],
-                            price = int.Parse(temp[2]),
-                            soruce = new BitmapImage(new Uri("/pics/error.jpg", UriKind.Relative))
-                        };
-                        productlist.Add(p);
-                        i--;
-                    }
-                }
-                
+                    } 
+                }  
             }
         }
     }
@@ -390,4 +365,3 @@ namespace Projekt_Butik
         public int price;
         public ImageSource soruce;
     }
-}
