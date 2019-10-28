@@ -32,6 +32,7 @@ namespace Projekt_Butik
 
 
         public List<Product> productlist;
+        public List<string> listBoxProducts;
 
         private Thickness defaultMargin = new Thickness(5);
         public MainWindow()
@@ -81,10 +82,14 @@ namespace Projekt_Butik
                 Margin = defaultMargin
             };
             grid.Children.Add(productsListBox);
-            productsListBox.Items.Add("Test product1");
-            productsListBox.Items.Add("Test product2");
-            productsListBox.Items.Add("Test product3");
-            productsListBox.Items.Add("Test product4");
+            //productsListBox.Items.Add("Test product1");
+            //productsListBox.Items.Add("Test product2");
+            //productsListBox.Items.Add("Test product3");
+            //productsListBox.Items.Add("Test product4");
+            foreach(string s in listBoxProducts)
+            {
+                productsListBox.Items.Add(s);
+            }
             Grid.SetColumn(productsListBox, 0);
             Grid.SetColumnSpan(productsListBox, 2);
             Grid.SetRow(productsListBox, 2);
@@ -354,7 +359,10 @@ namespace Projekt_Butik
                         };
                         productlist.Add(p);
                     } 
-                }  
+                }
+
+            listBoxProducts = new List<string>();
+            listBoxProducts = productlist.Select(p => p.brand + " " + p.info + " " + p.price).ToList();
             }
         }
     }
