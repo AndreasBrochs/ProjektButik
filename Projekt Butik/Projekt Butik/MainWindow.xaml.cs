@@ -28,6 +28,7 @@ namespace Projekt_Butik
         TextBox nrProducts;
         TextBox discount;
         Button addRemove;
+        TextBlock totalPrice;
 
 
         public List<Product> productlist;
@@ -106,40 +107,80 @@ namespace Projekt_Butik
             Grid.SetRow(tempCart, 2);
             Grid.SetRowSpan(tempCart, 4);
             tempCart.Items.Add("Test cart");
+        }
+        public void Controlls()
+        {
+            wrapPanel = new WrapPanel //wrappanel for the "remove" button to keep the layout nice and tidy
+            {
+                Orientation = Orientation.Horizontal
+            };
+            grid.Children.Add(wrapPanel);
+            Grid.SetColumn(wrapPanel, 4);
+            Grid.SetColumnSpan(wrapPanel, 2);
+            Grid.SetRow(wrapPanel, 6);
+            Grid.SetRowSpan(wrapPanel, 2);
+
+            addRemove = new Button
+            {
+                Content = "Remove product",
+                Margin = defaultMargin,
+                Padding = defaultMargin
+            };
+            wrapPanel.Children.Add(addRemove);
+
+            addRemove = new Button
+            {
+                Content = "Empty cart",
+                Margin = defaultMargin,
+                Padding = defaultMargin
+            };
+            wrapPanel.Children.Add(addRemove);
+
+            wrapPanel = new WrapPanel //wrappanel for the discount
+            {
+                Orientation = Orientation.Horizontal
+            };
+            grid.Children.Add(wrapPanel);
+            Grid.SetColumn(wrapPanel, 4);
+            Grid.SetColumnSpan(wrapPanel, 6);
+            Grid.SetRow(wrapPanel, 7);
+            Grid.SetRowSpan(wrapPanel, 2);
 
             Label discountLabel = new Label
             {
                 Content = "Discount code:",
-                HorizontalAlignment = HorizontalAlignment.Right,
-                VerticalAlignment = VerticalAlignment.Center
+                VerticalAlignment = VerticalAlignment.Center,
             };
-            grid.Children.Add(discountLabel);
-            Grid.SetColumn(discountLabel, 4);
-            Grid.SetRow(discountLabel, 6);
-
-        }
-        public void Controlls()
-        {
-
-
+            wrapPanel.Children.Add(discountLabel);
+           
             discount = new TextBox
             {
-                Text = "enter code here",
-                Margin = new Thickness(10)
+                Text = "enter code",
+                Margin = defaultMargin,
+                Padding = defaultMargin,
+                Width = 75 //to keep the box the same size when writing in it
             };
-            grid.Children.Add(discount);
+            wrapPanel.Children.Add(discount);
             Grid.SetColumn(discount, 5);
             Grid.SetRow(discount, 6);
 
-            wrapPanel = new WrapPanel //wrappanel for the controlls adding/removing products to the cart
+            addRemove = new Button
+            {
+                Content = "Add discount",
+                Margin = defaultMargin
+            };
+            wrapPanel.Children.Add(addRemove);
+
+            wrapPanel = new WrapPanel //wrappanel for the controlls under the avaiable proucts
             {
                 Orientation = Orientation.Horizontal
             };
             grid.Children.Add(wrapPanel);
             Grid.SetColumn(wrapPanel, 0);
-            Grid.SetColumnSpan(wrapPanel, 6);
+            Grid.SetColumnSpan(wrapPanel, 2);
             Grid.SetRow(wrapPanel, 8);
-            Grid.SetRowSpan(wrapPanel, 2);
+            Grid.SetRowSpan(wrapPanel, 3);
+
             addRemove = new Button
             {
                 Content = "+",
@@ -147,6 +188,7 @@ namespace Projekt_Butik
                 Padding = new Thickness(10)
             };
             wrapPanel.Children.Add(addRemove);
+
             nrProducts = new TextBox
             {
                 Text = "1",
@@ -154,6 +196,7 @@ namespace Projekt_Butik
                 Padding = new Thickness(10)
             };
             wrapPanel.Children.Add(nrProducts);
+
             addRemove = new Button
             {
                 Content = "-",
@@ -170,6 +213,31 @@ namespace Projekt_Butik
             };
             wrapPanel.Children.Add(addRemove);
 
+            wrapPanel = new WrapPanel //wrappanel for the controlls under the cart, minus the discount
+            {
+                Orientation = Orientation.Horizontal
+            };
+            grid.Children.Add(wrapPanel);
+            Grid.SetColumn(wrapPanel, 4);
+            Grid.SetColumnSpan(wrapPanel, 2);
+            Grid.SetRow(wrapPanel, 8);
+            Grid.SetRowSpan(wrapPanel, 3);
+
+            totalPrice = new TextBlock
+            {
+                Text = "Total Price: 0kr",
+                VerticalAlignment = VerticalAlignment.Center,
+                Width = 120
+            };
+            wrapPanel.Children.Add(totalPrice);
+
+            addRemove = new Button
+            {
+                Content = "BUY",
+                Margin = defaultMargin,
+                Padding = new Thickness(10)
+            };
+            wrapPanel.Children.Add(addRemove);
 
         }
         private Image CreateImage(string filePath)
