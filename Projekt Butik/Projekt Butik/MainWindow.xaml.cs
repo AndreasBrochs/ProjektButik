@@ -47,8 +47,8 @@ namespace Projekt_Butik
         public void Start()
         {
             Title = "Guitar store";
-            Width = 900;
-            Height = 600;
+            Width = 1100;
+            Height = 700;
             BasicLayout();
             ControllsProductsInStore();
             ControllsCart();
