@@ -271,10 +271,13 @@ namespace Projekt_Butik
                 catch
                 {
                     i++;
-                    MessageBox.Show("Felaktig inmatning, kontrollera rad " + i + " i productlist.txt");
+                    MessageBox.Show("Felaktig prissättning, kontrollera rad " + i + " i productlist.txt");
                     Environment.Exit(0);
                 }
-                if(temp.Length < 4)
+
+
+
+                if (temp.Length < 4)
                 {
                     Product p = new Product
                     {
@@ -287,14 +290,32 @@ namespace Projekt_Butik
                 }
                 else
                 {
-                    Product p = new Product
+                    if (File.Exists("/pics/" + temp[3]))
                     {
-                        brand = temp[0],
-                        info = temp[1],
-                        price = int.Parse(temp[2]),
-                        soruce = new BitmapImage(new Uri("/pics/" + temp[3], UriKind.Relative))
-                    };
-                    productlist.Add(p);
+                        Product p = new Product
+                        {
+                            brand = temp[0],
+                            info = temp[1],
+                            price = int.Parse(temp[2]),
+                            soruce = new BitmapImage(new Uri("/pics/" + temp[3], UriKind.Relative))
+                        };
+                        productlist.Add(p);
+                    }
+
+                    else
+                    {
+                        i++;
+                        MessageBox.Show("Felaktig bildfil, bilden kommer att ersättas med errorbilden. Kontrollera rad " + i + " i productlist.txt");
+                        Product p = new Product
+                        {
+                            brand = temp[0],
+                            info = temp[1],
+                            price = int.Parse(temp[2]),
+                            soruce = new BitmapImage(new Uri("/pics/error.jpg", UriKind.Relative))
+                        };
+                        productlist.Add(p);
+                        i--;
+                    }
                 }
                 
             }
