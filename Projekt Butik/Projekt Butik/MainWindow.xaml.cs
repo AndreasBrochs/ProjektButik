@@ -338,7 +338,12 @@ namespace Projekt_Butik
                 }
                 else
                 {
-                    if (File.Exists("/pics/" + temp[3]))
+                    ImageSource sorceCheck = new BitmapImage(new Uri("/pics/" + temp[3], UriKind.Relative));
+                    Image imageCheck = new Image
+                    {
+                        Source = sorceCheck
+                    };
+                    if (File.Exists(imageCheck.ToString()))
                     {
                         Product p = new Product
                         {
