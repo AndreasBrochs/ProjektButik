@@ -32,6 +32,8 @@ namespace Projekt_Butik
         Button addRemove;
         TextBlock totalPrice;
         DataTable dataTable;
+        private ImageSource imageSource;
+        private Image Image;
 
 
         public List<Product> productlist;
@@ -61,8 +63,6 @@ namespace Projekt_Butik
             grid = (Grid)Content;
             dataGrid = new DataGrid();
 
-
-
             for (int i = 0; i < 6; i++)
             {
                 grid.ColumnDefinitions.Add(new ColumnDefinition());
@@ -86,23 +86,8 @@ namespace Projekt_Butik
             grid.Children.Add(header);
             Grid.SetRowSpan(header, 2);
             Grid.SetColumnSpan(header, 6);
-            //productsListBox = new ListBox
-            //{
-            //    Margin = defaultMargin
-            //};
-            //grid.Children.Add(productsListBox);
-            ////productsListBox.Items.Add("Test product1");
-            ////productsListBox.Items.Add("Test product2");
-            ////productsListBox.Items.Add("Test product3");
-            ////productsListBox.Items.Add("Test product4");
-            //foreach(string s in listBoxProducts)
-            //{
-            //    productsListBox.Items.Add(s);
-            //}
-            dataTable = new DataTable
-            {
 
-            };
+            dataTable = new DataTable();
             dataTable.Columns.AddRange(new DataColumn[3]
             { new DataColumn ("Brand", typeof(string)), new DataColumn ("Info", typeof(string)), new DataColumn("Price", typeof(int))});
 
@@ -119,19 +104,7 @@ namespace Projekt_Butik
             Grid.SetRow(dataGrid, 2);
             Grid.SetRowSpan(dataGrid, 6);
             dataGrid.ItemsSource = dataTable.DefaultView;
-
-
-
-
-
-            Image productImage = CreateImage(productlist[2].soruce.ToString());
-            grid.Children.Add(productImage);
-            Grid.SetColumn(productImage, 4);
-            Grid.SetRow(productImage, 3);
-            Grid.SetColumn(productImage, 2);
-            Grid.SetColumnSpan(productImage, 2);
-            Grid.SetRow(productImage, 2);
-            Grid.SetRowSpan(productImage, 6);
+            dataGrid.GotMouseCapture += DataGrid_GotMouseCapture;     
 
             showCart = new ListBox
             {
@@ -147,6 +120,31 @@ namespace Projekt_Butik
             showCart.Items.Add("Test cart3");
             showCart.Items.Add("Test cart4");
         }
+
+        private void DataGrid_GotMouseCapture(object sender, MouseEventArgs e)
+        {
+            DataGrid data = (DataGrid)sender;
+            grid.Children.Remove(Image);
+            imageSource = new BitmapImage(new Uri(productlist[data.SelectedIndex].soruce.ToString(), UriKind.Relative));
+
+            Image = new Image
+               {
+                   Source = imageSource,
+                   HorizontalAlignment = HorizontalAlignment.Stretch,
+                   VerticalAlignment = VerticalAlignment.Stretch,
+                   Margin = defaultMargin
+               };
+
+               grid.Children.Add(Image);
+               Grid.SetColumn(Image, 4);
+               Grid.SetRow(Image, 3);
+               Grid.SetColumn(Image, 2);
+               Grid.SetColumnSpan(Image, 2);
+               Grid.SetRow(Image, 2);
+               Grid.SetRowSpan(Image, 6);
+        }
+
+
         public void ControllsCart()
         {
             wrapPanel = new WrapPanel
@@ -360,18 +358,7 @@ namespace Projekt_Butik
                 MessageBox.Show("You must enter a number");
             }
         }
-        private Image CreateImage(string filePath)
-        {
-            ImageSource source = new BitmapImage(new Uri(filePath, UriKind.Relative));
-            Image image = new Image
-            {
-                Source = source,
-                HorizontalAlignment = HorizontalAlignment.Stretch,
-                VerticalAlignment = VerticalAlignment.Stretch,
-                Margin = defaultMargin
-            };
-            return image;
-        }
+   
         public void CreateDiscount()
         {
             string[] path = File.ReadAllLines("discount.txt");
