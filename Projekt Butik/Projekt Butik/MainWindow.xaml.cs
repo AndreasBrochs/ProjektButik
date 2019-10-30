@@ -61,7 +61,11 @@ namespace Projekt_Butik
         public void BasicLayout()
         {
             grid = (Grid)Content;
-            dataGrid = new DataGrid();
+            dataGrid = new DataGrid 
+            { 
+                VerticalAlignment = VerticalAlignment.Stretch, 
+                HorizontalAlignment = HorizontalAlignment.Stretch
+            };
 
             for (int i = 0; i < 6; i++)
             {
@@ -88,21 +92,27 @@ namespace Projekt_Butik
             Grid.SetColumnSpan(header, 6);
 
             dataTable = new DataTable();
+           
             dataTable.Columns.AddRange(new DataColumn[3]
             { new DataColumn ("Brand", typeof(string)), new DataColumn ("Info", typeof(string)), new DataColumn("Price", typeof(int))});
-
+            
             for (int i = 0; i < productlist.Count; i++)
             {
+                
                 string brand = productlist[i].brand;
                 string info = productlist[i].info;
                 int price = productlist[i].price;
                 dataTable.Rows.Add(new object[] { brand, info, price });
+                
             }
+            
             grid.Children.Add(dataGrid);
             Grid.SetColumn(dataGrid, 0);
             Grid.SetColumnSpan(dataGrid, 2);
             Grid.SetRow(dataGrid, 2);
             Grid.SetRowSpan(dataGrid, 6);
+            dataGrid.IsReadOnly = true;
+
             dataGrid.ItemsSource = dataTable.DefaultView;
             dataGrid.GotMouseCapture += DataGrid_GotMouseCapture;     
 
@@ -124,25 +134,36 @@ namespace Projekt_Butik
         private void DataGrid_GotMouseCapture(object sender, MouseEventArgs e)
         {
             DataGrid data = (DataGrid)sender;
-            grid.Children.Remove(Image);
+
+            if (data.SelectedIndex > -1)
+            {  
+                    
+                    
             imageSource = new BitmapImage(new Uri(productlist[data.SelectedIndex].soruce.ToString(), UriKind.Relative));
+                    
+                
+                
+                
+                grid.Children.Remove(Image);
+                
 
-            Image = new Image
-               {
-                   Source = imageSource,
-                   HorizontalAlignment = HorizontalAlignment.Stretch,
-                   VerticalAlignment = VerticalAlignment.Stretch,
-                   Margin = defaultMargin
-               };
+                Image = new Image
+                {
+                    Source = imageSource,
+                    HorizontalAlignment = HorizontalAlignment.Stretch,
+                    VerticalAlignment = VerticalAlignment.Stretch,
+                    Margin = defaultMargin
+                };
 
-               grid.Children.Add(Image);
-               Grid.SetColumn(Image, 4);
-               Grid.SetRow(Image, 3);
-               Grid.SetColumn(Image, 2);
-               Grid.SetColumnSpan(Image, 2);
-               Grid.SetRow(Image, 2);
-               Grid.SetRowSpan(Image, 6);
-        }
+                grid.Children.Add(Image);
+                Grid.SetColumn(Image, 4);
+                Grid.SetRow(Image, 3);
+                Grid.SetColumn(Image, 2);
+                Grid.SetColumnSpan(Image, 2);
+                Grid.SetRow(Image, 2);
+                Grid.SetRowSpan(Image, 6);
+            }
+        }   
 
 
         public void ControllsCart()
