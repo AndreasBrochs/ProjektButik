@@ -44,6 +44,8 @@ namespace Projekt_Butik
         public Dictionary<string, int> discountCodes;
         public Cart cart = new Cart();
 
+        const string CartFilePath = @"C:\Windows\Temp\Cart.csv";
+
         private Thickness defaultMargin = new Thickness(5);
         public MainWindow()
         {
@@ -209,7 +211,16 @@ namespace Projekt_Butik
         }
         private void SaveCart_Click(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            Cart c = new Cart { };
+            List<string> cartList = new List<string>();
+            foreach (KeyValuePair<string,int> pair in c.shoppingCart)
+            {
+                string name = pair.Key;
+                int amount = pair.Value;
+                cartList.Add(name + ";" + amount);
+            }
+            File.WriteAllLines(CartFilePath, cartList);
+            MessageBox.Show("Your cart is now saved. Hallelujah");
         }
         private void EmptyCart_Click(object sender, RoutedEventArgs e)
         {
@@ -285,7 +296,10 @@ namespace Projekt_Butik
         }
         private void Buy_Click(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+            if (File.Exists(CartFilePath))
+            {
+                File.Delete(CartFilePath);
+            }
         }
         private void Discount_Click(object sender, RoutedEventArgs e)
         {
