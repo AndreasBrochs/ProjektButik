@@ -25,7 +25,6 @@ namespace Projekt_Butik
         DataGrid dataGrid;
         WrapPanel wrapPanel;
         TextBox header;
-        ListBox productsListBox;
         ListBox showCart;
         TextBox nrProducts;
         TextBox discount;
@@ -37,7 +36,7 @@ namespace Projekt_Butik
         public int shopAmount;
         private ImageSource imageSource;
         private Image Image;
-        public DataRow[] dataRow;
+        
         public List<string> test1;
         public List<Product> productlist;
         public List<string> listBoxProducts;
@@ -100,16 +99,14 @@ namespace Projekt_Butik
             Grid.SetColumnSpan(header, 6);
 
             dataTable = new DataTable();
-            dataRow = new DataRow[productlist.Count];
             dataTable.Columns.AddRange(new DataColumn[3]
             { new DataColumn ("Brand", typeof(string)), new DataColumn ("Info", typeof(string)), new DataColumn("Price", typeof(int))});
 
             for (int i = 0; i < productlist.Count; i++)
             {
                 dataTable.Rows.Add(new object[] { productlist[i].brand, productlist[i].info, productlist[i].price });
-
             };
-            dataRow = dataTable.Select().ToArray();
+            
             grid.Children.Add(dataGrid);
             Grid.SetColumn(dataGrid, 0);
             Grid.SetColumnSpan(dataGrid, 2);
@@ -132,10 +129,6 @@ namespace Projekt_Butik
             Grid.SetColumnSpan(showCart, 2);
             Grid.SetRow(showCart, 2);
             Grid.SetRowSpan(showCart, 4);
-            showCart.Items.Add("Test cart1");
-            showCart.Items.Add("Test cart2");
-            showCart.Items.Add("Test cart3");
-            showCart.Items.Add("Test cart4");
         }
 
         private void DataGrid_GotMouseCapture(object sender, MouseEventArgs e)
@@ -225,10 +218,12 @@ namespace Projekt_Butik
         private void EmptyCart_Click(object sender, RoutedEventArgs e)
         {
             showCart.Items.Clear();
+            cart.shoppingCart.Clear();
         }
         private void RemoveProduct_Click(object sender, RoutedEventArgs e)
         {
-            showCart.Items.Remove(showCart.SelectedItem);
+           
+            
         }
         public void ControllsBuy()
         {
@@ -365,7 +360,8 @@ namespace Projekt_Butik
             shopAmount = int.Parse(nrProducts.Text);
             if (shopAmount > 0)
             {
-                string temp = productlist[shopIndex].brand + " " + productlist[shopIndex].info + " ";
+                showCart.Items.Clear();
+                string temp = productlist[shopIndex].brand + " - " + productlist[shopIndex].info + " : ";
                 if (cart.shoppingCart.ContainsKey(temp))
                 {
                     cart.shoppingCart[temp] += shopAmount;
@@ -373,6 +369,10 @@ namespace Projekt_Butik
                 else
                 {
                     cart.shoppingCart.Add(temp, shopAmount);
+                }
+                foreach(KeyValuePair<string, int> key in cart.shoppingCart)
+                {
+                    showCart.Items.Add(key);
                 }
             }
             else
@@ -462,9 +462,6 @@ namespace Projekt_Butik
                     productlist.Add(p);
                 }
             }
-
-            listBoxProducts = new List<string>();
-            listBoxProducts = productlist.Select(p => p.brand + " " + p.info + " " + p.price).ToList();
         }
         public void LoadProducts()
         {
