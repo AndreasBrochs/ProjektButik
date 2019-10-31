@@ -37,7 +37,7 @@ namespace Projekt_Butik
         public int shopAmount;
         private ImageSource imageSource;
         private Image Image;
-        public DataRow [] dataRow;
+        public DataRow[] dataRow;
         public List<string> test1;
         public List<Product> productlist;
         public List<string> listBoxProducts;
@@ -52,7 +52,7 @@ namespace Projekt_Butik
             InitializeComponent();
             CreateProducts();
             CreateDiscount();
-            
+
             Start();
         }
         public void Start()
@@ -69,9 +69,9 @@ namespace Projekt_Butik
         {
             Cart cart = new Cart();
             grid = (Grid)Content;
-            dataGrid = new DataGrid 
-            { 
-                VerticalAlignment = VerticalAlignment.Stretch, 
+            dataGrid = new DataGrid
+            {
+                VerticalAlignment = VerticalAlignment.Stretch,
                 HorizontalAlignment = HorizontalAlignment.Stretch
             };
 
@@ -103,11 +103,11 @@ namespace Projekt_Butik
             dataRow = new DataRow[productlist.Count];
             dataTable.Columns.AddRange(new DataColumn[3]
             { new DataColumn ("Brand", typeof(string)), new DataColumn ("Info", typeof(string)), new DataColumn("Price", typeof(int))});
-            
+
             for (int i = 0; i < productlist.Count; i++)
             {
                 dataTable.Rows.Add(new object[] { productlist[i].brand, productlist[i].info, productlist[i].price });
-                
+
             };
             dataRow = dataTable.Select().ToArray();
             grid.Children.Add(dataGrid);
@@ -120,8 +120,8 @@ namespace Projekt_Butik
             dataGrid.CanUserResizeColumns = false;
             dataGrid.CanUserResizeRows = false;
             dataGrid.ItemsSource = dataTable.DefaultView;
-            
-            dataGrid.GotMouseCapture += DataGrid_GotMouseCapture;     
+
+            dataGrid.GotMouseCapture += DataGrid_GotMouseCapture;
 
             showCart = new ListBox
             {
@@ -141,16 +141,16 @@ namespace Projekt_Butik
         private void DataGrid_GotMouseCapture(object sender, MouseEventArgs e)
         {
             DataGrid data = (DataGrid)sender;
-            
+
             if (data.SelectedIndex > -1)
             {
                 var temp = data.SelectedItem;
                 shopIndex = dataGrid.SelectedIndex;
 
                 imageSource = new BitmapImage(new Uri(productlist[data.SelectedIndex].soruce.ToString(), UriKind.Relative));
-                
+
                 grid.Children.Remove(Image);
-                
+
                 Image = new Image
                 {
                     Source = imageSource,
@@ -167,7 +167,7 @@ namespace Projekt_Butik
                 Grid.SetRow(Image, 2);
                 Grid.SetRowSpan(Image, 6);
             }
-        }   
+        }
 
 
         public void ControllsCart()
@@ -213,7 +213,7 @@ namespace Projekt_Butik
         {
             Cart c = new Cart { };
             List<string> cartList = new List<string>();
-            foreach (KeyValuePair<string,int> pair in c.shoppingCart)
+            foreach (KeyValuePair<string, int> pair in c.shoppingCart)
             {
                 string name = pair.Key;
                 int amount = pair.Value;
@@ -304,7 +304,7 @@ namespace Projekt_Butik
         private void Discount_Click(object sender, RoutedEventArgs e)
         {
             int amount = 0;
-            foreach(KeyValuePair<string,int> pair in discountCodes)
+            foreach (KeyValuePair<string, int> pair in discountCodes)
             {
                 if (pair.Key == discount.Text)
                 {
@@ -409,7 +409,7 @@ namespace Projekt_Butik
                 MessageBox.Show("You must enter a number");
             }
         }
-   
+
         public void CreateDiscount()
         {
             string[] path = File.ReadAllLines("discount.txt");
@@ -418,7 +418,7 @@ namespace Projekt_Butik
             {
                 string[] temp = path[i].Split(';');
                 int tempNr = int.Parse(temp[1]);
-                discountCodes.Add(temp[0],tempNr);
+                discountCodes.Add(temp[0], tempNr);
             }
         }
         public void CreateProducts()
@@ -465,6 +465,10 @@ namespace Projekt_Butik
 
             listBoxProducts = new List<string>();
             listBoxProducts = productlist.Select(p => p.brand + " " + p.info + " " + p.price).ToList();
+        }
+        public void LoadProducts()
+        {
+
         }
     }
 }
