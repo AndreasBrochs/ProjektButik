@@ -349,14 +349,21 @@ namespace Projekt_Butik
         private void AddToCart_Click(object sender, RoutedEventArgs e)
         {
             shopAmount = int.Parse(nrProducts.Text);
-            string temp = productlist[shopIndex].brand + " " + productlist[shopIndex].info + " ";
-            if (cart.shoppingCart.ContainsKey(temp))
+            if (shopAmount > 0)
             {
-                cart.shoppingCart[temp] += shopAmount;
+                string temp = productlist[shopIndex].brand + " " + productlist[shopIndex].info + " ";
+                if (cart.shoppingCart.ContainsKey(temp))
+                {
+                    cart.shoppingCart[temp] += shopAmount;
+                }
+                else
+                {
+                    cart.shoppingCart.Add(temp, shopAmount);
+                }
             }
             else
             {
-                cart.shoppingCart.Add(temp, shopAmount);
+                MessageBox.Show("Du måste lägga till antal högre än 0");
             }
         }
         private void MinusProduct_Click(object sender, RoutedEventArgs e)
