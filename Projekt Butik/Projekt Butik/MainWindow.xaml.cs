@@ -205,16 +205,37 @@ namespace Projekt_Butik
         }
         private void SaveCart_Click(object sender, RoutedEventArgs e)
         {
-            Cart c = new Cart { };
-            List<string> cartList = new List<string>();
-            foreach (KeyValuePair<string, int> pair in c.shoppingCart)
+            if (File.Exists(CartFilePath))
             {
-                string name = pair.Key;
-                int amount = pair.Value;
-                cartList.Add(name + ";" + amount);
+                MessageBoxButton fileFound = MessageBoxButton.YesNo;
+                string title = "Kundvagn hittad";
+                string text = "Det finns redan en Kundvagnsfil, vill du ersätta den med aktuell kundvagn ?";
+                var message = MessageBox.Show(text, title, fileFound);
+                if (message == MessageBoxResult.Yes)
+                {
+                    List<string> cartList = new List<string>();
+                    foreach (KeyValuePair<string, int> pair in cart.shoppingCart)
+                    {
+                        string name = pair.Key;
+                        int amount = pair.Value;
+                        cartList.Add(name + ";" + amount);
+                    }
+                    File.WriteAllLines(CartFilePath, cartList);
+                    MessageBox.Show("Your cart is now saved. Hallelujah");
+                }
             }
-            File.WriteAllLines(CartFilePath, cartList);
-            MessageBox.Show("Your cart is now saved. Hallelujah");
+            else
+            {
+                List<string> cartList = new List<string>();
+                foreach (KeyValuePair<string, int> pair in cart.shoppingCart)
+                {
+                    string name = pair.Key;
+                    int amount = pair.Value;
+                    cartList.Add(name + ";" + amount);
+                }
+                File.WriteAllLines(CartFilePath, cartList);
+                MessageBox.Show("Your cart is now saved. Hallelujah");
+            }
         }
         private void EmptyCart_Click(object sender, RoutedEventArgs e)
         {
