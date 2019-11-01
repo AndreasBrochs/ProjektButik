@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+
 namespace Projekt_Butik
 {
     /// <summary>
@@ -222,8 +223,24 @@ namespace Projekt_Butik
         }
         private void RemoveProduct_Click(object sender, RoutedEventArgs e)
         {
-           
-            
+            try
+            {
+                string remove = showCart.SelectedItem.ToString();
+                cart.shoppingCart.Remove(remove);
+                foreach (KeyValuePair<string, int> key in cart.shoppingCart)
+                {
+                    if (key.ToString() == remove)
+                    {
+                        cart.shoppingCart.Remove(key.Key);
+                        break;
+                    }
+                }
+                showCart.Items.Remove(showCart.SelectedItem);
+            }
+            catch
+            {
+                System.Media.SystemSounds.Exclamation.Play();
+            }
         }
         public void ControllsBuy()
         {
@@ -357,27 +374,34 @@ namespace Projekt_Butik
         }
         private void AddToCart_Click(object sender, RoutedEventArgs e)
         {
-            shopAmount = int.Parse(nrProducts.Text);
-            if (shopAmount > 0)
+            try
             {
-                showCart.Items.Clear();
-                string temp = productlist[shopIndex].brand + " - " + productlist[shopIndex].info + " : ";
-                if (cart.shoppingCart.ContainsKey(temp))
+                shopAmount = int.Parse(nrProducts.Text);
+                if (shopAmount > 0)
                 {
-                    cart.shoppingCart[temp] += shopAmount;
+                    showCart.Items.Clear();
+                    string temp = productlist[shopIndex].brand + " - " + productlist[shopIndex].info + " : ";
+                    if (cart.shoppingCart.ContainsKey(temp))
+                    {
+                        cart.shoppingCart[temp] += shopAmount;
+                    }
+                    else
+                    {
+                        cart.shoppingCart.Add(temp, shopAmount);
+                    }
+                    foreach (KeyValuePair<string, int> key in cart.shoppingCart)
+                    {
+                        showCart.Items.Add(key);
+                    }
                 }
                 else
                 {
-                    cart.shoppingCart.Add(temp, shopAmount);
-                }
-                foreach(KeyValuePair<string, int> key in cart.shoppingCart)
-                {
-                    showCart.Items.Add(key);
+                    MessageBox.Show("Du måste lägga till antal högre än 0");
                 }
             }
-            else
+            catch
             {
-                MessageBox.Show("Du måste lägga till antal högre än 0");
+                nrProducts.Text = shopAmount.ToString();
             }
         }
         private void MinusProduct_Click(object sender, RoutedEventArgs e)
@@ -435,6 +459,7 @@ namespace Projekt_Butik
                 catch
                 {
                     i++;
+                    System.Media.SystemSounds.Exclamation.Play();
                     MessageBox.Show("Felaktig prissättning, kontrollera rad " + i + " i productlist.txt");
                     Environment.Exit(0);
                 }
@@ -460,6 +485,27 @@ namespace Projekt_Butik
                         soruce = new BitmapImage(new Uri("/pics/" + temp[3], UriKind.Relative))
                     };
                     productlist.Add(p);
+                    //if(!File.Exists(@"productlist[i].soruce.ToString()"))
+                    //{
+                    //    i++;
+                       
+                    //    string picNotFound = "Bildenfilen hittades inte, kontrollera rad " + i + " i productlist.txt om inmatningen är korrekt. \n" +
+                    //        "Samt kontrollera om bildfilen finns i bildmappen. Vill du fortsätta? (Produktbilden kommer ersättas med Kommer snart-bilden)";
+                    //    string title = "Bildfilen hittades inte";
+                    //    MessageBoxButton error = MessageBoxButton.YesNo;
+                    //    var test = MessageBox.Show(picNotFound, title, error);
+                        
+                    //    if (test == MessageBoxResult.Yes)
+                    //    {
+                    //        i--;
+                    //        productlist[i].soruce = new BitmapImage(new Uri("/pics/error.jpg", UriKind.Relative));
+                    //    }
+                    //    else
+                    //    {
+                    //        Environment.Exit(0);
+                    //    }
+                        
+                    //}
                 }
             }
         }
