@@ -30,11 +30,12 @@ namespace Projekt_Butik
         TextBox nrProducts;
         TextBox discount;
         Button addRemove;
-        TextBlock totalPrice;
+        TextBlock totalPriceBlock;
         DataTable dataTable;
 
         public int shopIndex;
-        public int shopAmount;
+        public int shopAmount = 1;
+        public int totalPrice = 0;
         private ImageSource imageSource;
         private Image Image;
         
@@ -162,8 +163,6 @@ namespace Projekt_Butik
                 Grid.SetRowSpan(Image, 6);
             }
         }
-
-
         public void ControllsCart()
         {
             wrapPanel = new WrapPanel
@@ -241,6 +240,8 @@ namespace Projekt_Butik
         {
             showCart.Items.Clear();
             cart.shoppingCart.Clear();
+            totalPrice = 0;
+            totalPriceBlock.Text = $"Total Price: {totalPrice}kr";
         }
         private void RemoveProduct_Click(object sender, RoutedEventArgs e)
         {
@@ -257,6 +258,10 @@ namespace Projekt_Butik
                     }
                 }
                 showCart.Items.Remove(showCart.SelectedItem);
+                string[] removePriceArray = remove.Split(',',']'); //ful kod men den fungerar. fick splitta även vid ']' annars går det inte att omvandla siffran till int.
+                int removePrice = int.Parse(removePriceArray[1]); 
+                totalPrice -= removePrice * productlist[shopIndex].price;
+                totalPriceBlock.Text = $"Total Price: {totalPrice}";
             }
             catch
             {
@@ -310,13 +315,13 @@ namespace Projekt_Butik
             Grid.SetRow(wrapPanel, 8);
             Grid.SetRowSpan(wrapPanel, 3);
 
-            totalPrice = new TextBlock
+            totalPriceBlock = new TextBlock
             {
-                Text = "Total Price: 0kr",
+                Text = $"Total Price: {totalPrice}kr",
                 VerticalAlignment = VerticalAlignment.Center,
                 Width = 120
             };
-            wrapPanel.Children.Add(totalPrice);
+            wrapPanel.Children.Add(totalPriceBlock);
 
             addRemove = new Button
             {
@@ -405,10 +410,14 @@ namespace Projekt_Butik
                     if (cart.shoppingCart.ContainsKey(temp))
                     {
                         cart.shoppingCart[temp] += shopAmount;
+                        totalPrice += shopAmount * productlist[shopIndex].price;
+                        totalPriceBlock.Text = $"Total Price: {totalPrice}kr";
                     }
                     else
                     {
                         cart.shoppingCart.Add(temp, shopAmount);
+                        totalPrice += shopAmount * productlist[shopIndex].price;
+                        totalPriceBlock.Text = $"Total Price: {totalPrice}kr";
                     }
                     foreach (KeyValuePair<string, int> key in cart.shoppingCart)
                     {
