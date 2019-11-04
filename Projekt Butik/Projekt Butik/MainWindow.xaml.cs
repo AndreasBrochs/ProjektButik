@@ -54,12 +54,11 @@ namespace Projekt_Butik
             InitializeComponent();
             CreateProducts();
             CreateDiscount();
-
             Start();
         }
         public void Start()
         {
-            Title = "Guitar store";
+            Title = "Gitarr butik";
             Width = 1100;
             Height = 700;
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
@@ -134,7 +133,6 @@ namespace Projekt_Butik
             Grid.SetRow(showCart, 2);
             Grid.SetRowSpan(showCart, 4);
         }
-
         private void DataGrid_GotMouseCapture(object sender, MouseEventArgs e)
         {
             DataGrid data = (DataGrid)sender;
@@ -361,8 +359,6 @@ namespace Projekt_Butik
                     }
                 }
             }
-
-
         }
         public void ControllsProductsInStore()
         {
@@ -477,7 +473,6 @@ namespace Projekt_Butik
                 MessageBox.Show("You must enter a number");
             }
         }
-
         public void CreateDiscount()
         {
             string[] path = File.ReadAllLines("discount.txt");
