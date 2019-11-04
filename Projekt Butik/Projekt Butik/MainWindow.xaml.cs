@@ -38,10 +38,11 @@ namespace Projekt_Butik
         public int totalPrice = 0;
         private ImageSource imageSource;
         private Image Image;
-        
+
         public List<string> test1;
         public List<Product> productlist;
         public List<string> listBoxProducts;
+        List<string> usedCodes = new List<string> { };
         public Dictionary<string, int> discountCodes;
         public Cart cart = new Cart();
 
@@ -61,6 +62,7 @@ namespace Projekt_Butik
             Title = "Guitar store";
             Width = 1100;
             Height = 700;
+            WindowStartupLocation = WindowStartupLocation.CenterScreen;
             BasicLayout();
             ControllsProductsInStore();
             ControllsCart();
@@ -108,7 +110,7 @@ namespace Projekt_Butik
             {
                 dataTable.Rows.Add(new object[] { productlist[i].brand, productlist[i].info, productlist[i].price });
             };
-            
+
             grid.Children.Add(dataGrid);
             Grid.SetColumn(dataGrid, 0);
             Grid.SetColumnSpan(dataGrid, 2);
@@ -177,7 +179,7 @@ namespace Projekt_Butik
 
             addRemove = new Button
             {
-                Content = "Remove product",
+                Content = "Ta bort produkt",
                 Margin = defaultMargin,
                 Padding = defaultMargin
             };
@@ -186,7 +188,7 @@ namespace Projekt_Butik
 
             addRemove = new Button
             {
-                Content = "Empty cart",
+                Content = "Töm kundvagn",
                 Margin = defaultMargin,
                 Padding = defaultMargin
             };
@@ -195,7 +197,7 @@ namespace Projekt_Butik
 
             addRemove = new Button
             {
-                Content = "Save Cart",
+                Content = "Spara kundvagn",
                 Margin = defaultMargin,
                 Padding = defaultMargin
             };
@@ -220,7 +222,7 @@ namespace Projekt_Butik
                         cartList.Add(name + ";" + amount);
                     }
                     File.WriteAllLines(CartFilePath, cartList);
-                    MessageBox.Show("Your cart is now saved. Hallelujah");
+                    MessageBox.Show("Din kundvagn är nu sparad.");
                 }
             }
             else
@@ -233,7 +235,7 @@ namespace Projekt_Butik
                     cartList.Add(name + ";" + amount);
                 }
                 File.WriteAllLines(CartFilePath, cartList);
-                MessageBox.Show("Your cart is now saved. Hallelujah");
+                MessageBox.Show("Din kundvagn är nu sparad.");
             }
         }
         private void EmptyCart_Click(object sender, RoutedEventArgs e)
@@ -241,7 +243,7 @@ namespace Projekt_Butik
             showCart.Items.Clear();
             cart.shoppingCart.Clear();
             totalPrice = 0;
-            totalPriceBlock.Text = $"Total Price: {totalPrice}kr";
+            totalPriceBlock.Text = $"Totalt Pris: {totalPrice}kr";
         }
         private void RemoveProduct_Click(object sender, RoutedEventArgs e)
         {
@@ -258,10 +260,10 @@ namespace Projekt_Butik
                     }
                 }
                 showCart.Items.Remove(showCart.SelectedItem);
-                string[] removePriceArray = remove.Split(',',']'); //ful kod men den fungerar. fick splitta även vid ']' annars går det inte att omvandla siffran till int.
-                int removePrice = int.Parse(removePriceArray[1]); 
+                string[] removePriceArray = remove.Split(',', ']'); //ful kod men den fungerar. fick splitta även vid ']' annars går det inte att omvandla siffran till int.
+                int removePrice = int.Parse(removePriceArray[1]);
                 totalPrice -= removePrice * productlist[shopIndex].price;
-                totalPriceBlock.Text = $"Total Price: {totalPrice}";
+                totalPriceBlock.Text = $"Totalt Pris: {totalPrice}";
             }
             catch
             {
@@ -282,14 +284,14 @@ namespace Projekt_Butik
 
             Label discountLabel = new Label
             {
-                Content = "Discount code:",
+                Content = "Rabattkod:",
                 VerticalAlignment = VerticalAlignment.Center,
             };
             wrapPanel.Children.Add(discountLabel);
 
             discount = new TextBox
             {
-                Text = "enter code",
+                Text = "Skriv kod",
                 Margin = defaultMargin,
                 Padding = defaultMargin,
                 Width = 75 //to keep the box the same size when writing in it
@@ -300,7 +302,7 @@ namespace Projekt_Butik
 
             addRemove = new Button
             {
-                Content = "Add discount",
+                Content = "Aktivera rabatt",
                 Margin = defaultMargin
             };
             wrapPanel.Children.Add(addRemove);
@@ -317,7 +319,7 @@ namespace Projekt_Butik
 
             totalPriceBlock = new TextBlock
             {
-                Text = $"Total Price: {totalPrice}kr",
+                Text = $"Totalt Pris: {totalPrice}kr",
                 VerticalAlignment = VerticalAlignment.Center,
                 Width = 120
             };
@@ -325,7 +327,7 @@ namespace Projekt_Butik
 
             addRemove = new Button
             {
-                Content = "BUY",
+                Content = "KÖP",
                 Margin = defaultMargin,
                 Padding = new Thickness(10)
             };
@@ -342,13 +344,25 @@ namespace Projekt_Butik
         private void Discount_Click(object sender, RoutedEventArgs e)
         {
             int amount = 0;
-            foreach (KeyValuePair<string, int> pair in discountCodes)
+            if (usedCodes.Contains(discount.Text))
             {
-                if (pair.Key == discount.Text)
+                MessageBox.Show("Koden har redan använts");
+            }
+            else
+            {
+                foreach (KeyValuePair<string, int> pair in discountCodes)
                 {
-                    amount += pair.Value;
+                    if (pair.Key == discount.Text)
+                    {
+                        amount += pair.Value;
+                        totalPrice -= amount;
+                        totalPriceBlock.Text = $"Totalt Pris: {totalPrice}";
+                        usedCodes.Add(discount.Text);
+                    }
                 }
             }
+
+
         }
         public void ControllsProductsInStore()
         {
@@ -411,13 +425,13 @@ namespace Projekt_Butik
                     {
                         cart.shoppingCart[temp] += shopAmount;
                         totalPrice += shopAmount * productlist[shopIndex].price;
-                        totalPriceBlock.Text = $"Total Price: {totalPrice}kr";
+                        totalPriceBlock.Text = $"Totalt Pris: {totalPrice}kr";
                     }
                     else
                     {
                         cart.shoppingCart.Add(temp, shopAmount);
                         totalPrice += shopAmount * productlist[shopIndex].price;
-                        totalPriceBlock.Text = $"Total Price: {totalPrice}kr";
+                        totalPriceBlock.Text = $"Totalt Pris: {totalPrice}kr";
                     }
                     foreach (KeyValuePair<string, int> key in cart.shoppingCart)
                     {
@@ -518,13 +532,13 @@ namespace Projekt_Butik
                     //if(!File.Exists(@"productlist[i].soruce.ToString()"))
                     //{
                     //    i++;
-                       
+
                     //    string picNotFound = "Bildenfilen hittades inte, kontrollera rad " + i + " i productlist.txt om inmatningen är korrekt. \n" +
                     //        "Samt kontrollera om bildfilen finns i bildmappen. Vill du fortsätta? (Produktbilden kommer ersättas med Kommer snart-bilden)";
                     //    string title = "Bildfilen hittades inte";
                     //    MessageBoxButton error = MessageBoxButton.YesNo;
                     //    var test = MessageBox.Show(picNotFound, title, error);
-                        
+
                     //    if (test == MessageBoxResult.Yes)
                     //    {
                     //        i--;
@@ -534,7 +548,7 @@ namespace Projekt_Butik
                     //    {
                     //        Environment.Exit(0);
                     //    }
-                        
+
                     //}
                 }
             }
