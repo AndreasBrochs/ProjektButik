@@ -405,7 +405,7 @@ namespace Projekt_Butik
 
             addRemove = new Button
             {
-                Content = "Add to cart",
+                Content = "Lägg till i kundvagn",
                 Margin = defaultMargin,
                 Padding = new Thickness(10)
             };
