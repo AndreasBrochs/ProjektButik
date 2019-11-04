@@ -247,6 +247,25 @@ namespace Projekt_Butik
         {
             try
             {
+                //foreach (KeyValuePair<string, int> pair in discountCodes)
+                //{
+                //    string[] temp;
+                //    string test = "";
+                //    for (int i = 0; i < showCart.Items.Count; i++)
+                //    {
+                //        test = showCart.Items.ToString();
+                //        temp = test.Split(' ');
+                //        if (temp.Contains(pair.Key))
+                //        {
+                //            totalPrice += pair.Value;
+                //            usedCodes.Remove(pair.Key);
+                //            totalPriceBlock.Text = $"Totalt Pris: {totalPrice}";
+                //        }
+                //    }
+                //} 
+                //denna kod funkar inte. tanken är att den ska hitta om rabbatkoden ligger i kundvagnen 
+                //och om man tar bort rabbatkoden ska priset återgå till det normala
+
                 string remove = showCart.SelectedItem.ToString();
                 cart.shoppingCart.Remove(remove);
                 foreach (KeyValuePair<string, int> key in cart.shoppingCart)
@@ -352,10 +371,19 @@ namespace Projekt_Butik
                 {
                     if (pair.Key == discount.Text)
                     {
-                        amount += pair.Value;
-                        totalPrice -= amount;
-                        totalPriceBlock.Text = $"Totalt Pris: {totalPrice}";
-                        usedCodes.Add(discount.Text);
+                        if (showCart.Items.Count > 0)
+                        {
+                            amount += pair.Value;
+                            totalPrice -= amount;
+                            totalPriceBlock.Text = $"Totalt Pris: {totalPrice}";
+                            usedCodes.Add(discount.Text);
+                            //om man lägger till en produkt efter att man skrivit in koden försvinner koden från listan. fixa senare.
+                            showCart.Items.Add($"Koden {pair.Key} ger {pair.Value}kr rabatt");
+                        }
+                        else
+                        {
+                            MessageBox.Show("Du måste ha produkter i kundvagnen för att kunna använda en rabattkod");
+                        }
                     }
                 }
             }
