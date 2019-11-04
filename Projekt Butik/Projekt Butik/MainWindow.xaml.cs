@@ -64,11 +64,12 @@ namespace Projekt_Butik
             Height = 700;
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
             BasicLayout();
-            LoadProducts();
+            
             ControllsProductsInStore();
             ControllsCart();
             ControllsBuy();
-            
+            LoadProducts();
+
         }
         public void BasicLayout()
         {
@@ -275,17 +276,15 @@ namespace Projekt_Butik
                 {
                     if (key.ToString() == remove)
                     {
-                        int price = Convert.ToInt32(productlist.Where(p => p.info == remove).Select(p => p.price));
-                        int price2 = Convert.ToInt32(price);
+                        var price = productlist.Where(p => p.info.Contains(key.Key)).Select(p => p.price).ToList();
+
+                        int price2 = price.Max();
                         totalPrice -= key.Value * price2;
                         cart.shoppingCart.Remove(key.Key);
                         break;
                     }
                 }
                 showCart.Items.Remove(showCart.SelectedItem);
-                //string[] removePriceArray = remove.Split(',', ']'); //ful kod men den fungerar. fick splitta även vid ']' annars går det inte att omvandla siffran till int.
-                //int removePrice = int.Parse(removePriceArray[1]);
-                //totalPrice -= removePrice * productlist[shopIndex].price;
                 totalPriceBlock.Text = $"Totalt Pris: {totalPrice}";
             }
             catch
@@ -450,7 +449,7 @@ namespace Projekt_Butik
                 if (shopAmount > 0)
                 {
                     showCart.Items.Clear();
-                    string temp = productlist[shopIndex].brand + " - " + productlist[shopIndex].info + " : ";
+                    string temp = productlist[shopIndex].info;
                     if (cart.shoppingCart.ContainsKey(temp))
                     {
                         cart.shoppingCart[temp] += shopAmount;
@@ -580,16 +579,12 @@ namespace Projekt_Butik
                     }
                     foreach(KeyValuePair<string, int> c in cart.shoppingCart)
                     {
-                        for(int i = 0; i < productlist.Count; i++)
-                        {
-                            if (c.Key.ToString() == productlist[i].brand + " - " + productlist[i].info + " : ")
-                            {
-                                totalPrice += productlist[i].price * c.Value;
-                            }
-                        }
+                        var getPrice = productlist.Where(p => p.info.Contains(c.Key)).Select(p => p.price).ToList();
+                        totalPrice += c.Value * getPrice.Max();
 
                         showCart.Items.Add(c);
                     }
+                    totalPriceBlock.Text = $"Totalt Pris: {totalPrice}kr";
                 }
             }
         }
