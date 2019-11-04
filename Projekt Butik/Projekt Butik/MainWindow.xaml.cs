@@ -39,6 +39,7 @@ namespace Projekt_Butik
         private ImageSource imageSource;
         private Image Image;
 
+        public string test = new string(' ', 1000);
         public List<string> test1;
         public List<Product> productlist;
         public List<string> listBoxProducts;
@@ -63,9 +64,11 @@ namespace Projekt_Butik
             Height = 700;
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
             BasicLayout();
+            LoadProducts();
             ControllsProductsInStore();
             ControllsCart();
             ControllsBuy();
+            
         }
         public void BasicLayout()
         {
@@ -253,14 +256,17 @@ namespace Projekt_Butik
                 {
                     if (key.ToString() == remove)
                     {
+                        int price = Convert.ToInt32(productlist.Where(p => p.info == remove).Select(p => p.price));
+                        int price2 = Convert.ToInt32(price);
+                        totalPrice -= key.Value * price2;
                         cart.shoppingCart.Remove(key.Key);
                         break;
                     }
                 }
                 showCart.Items.Remove(showCart.SelectedItem);
-                string[] removePriceArray = remove.Split(',', ']'); //ful kod men den fungerar. fick splitta även vid ']' annars går det inte att omvandla siffran till int.
-                int removePrice = int.Parse(removePriceArray[1]);
-                totalPrice -= removePrice * productlist[shopIndex].price;
+                //string[] removePriceArray = remove.Split(',', ']'); //ful kod men den fungerar. fick splitta även vid ']' annars går det inte att omvandla siffran till int.
+                //int removePrice = int.Parse(removePriceArray[1]);
+                //totalPrice -= removePrice * productlist[shopIndex].price;
                 totalPriceBlock.Text = $"Totalt Pris: {totalPrice}";
             }
             catch
@@ -524,33 +530,40 @@ namespace Projekt_Butik
                         soruce = new BitmapImage(new Uri("/pics/" + temp[3], UriKind.Relative))
                     };
                     productlist.Add(p);
-                    //if(!File.Exists(@"productlist[i].soruce.ToString()"))
-                    //{
-                    //    i++;
-
-                    //    string picNotFound = "Bildenfilen hittades inte, kontrollera rad " + i + " i productlist.txt om inmatningen är korrekt. \n" +
-                    //        "Samt kontrollera om bildfilen finns i bildmappen. Vill du fortsätta? (Produktbilden kommer ersättas med Kommer snart-bilden)";
-                    //    string title = "Bildfilen hittades inte";
-                    //    MessageBoxButton error = MessageBoxButton.YesNo;
-                    //    var test = MessageBox.Show(picNotFound, title, error);
-
-                    //    if (test == MessageBoxResult.Yes)
-                    //    {
-                    //        i--;
-                    //        productlist[i].soruce = new BitmapImage(new Uri("/pics/error.jpg", UriKind.Relative));
-                    //    }
-                    //    else
-                    //    {
-                    //        Environment.Exit(0);
-                    //    }
-
-                    //}
                 }
             }
         }
         public void LoadProducts()
         {
+            if(File.Exists(CartFilePath))
+            {
+                MessageBoxButton fileFound = MessageBoxButton.YesNo;
+                string title = "Kundvagn hittad";
+                string text = "Det finns redan en Kundvagnsfil sparad, vill du öppna den?";
+                System.Media.SystemSounds.Exclamation.Play();
+                var message = MessageBox.Show(text, title, fileFound);                
+                if (message == MessageBoxResult.Yes)
+                {
+                    string[] loadCart = File.ReadAllLines(CartFilePath);
+                    for(int i = 0; i < loadCart.Length; i++)
+                    {
+                        string[] temp = loadCart[i].Split(';');
+                        cart.shoppingCart.Add(temp[0], int.Parse(temp[1]));
+                    }
+                    foreach(KeyValuePair<string, int> c in cart.shoppingCart)
+                    {
+                        for(int i = 0; i < productlist.Count; i++)
+                        {
+                            if (c.Key.ToString() == productlist[i].brand + " - " + productlist[i].info + " : ")
+                            {
+                                totalPrice += productlist[i].price * c.Value;
+                            }
+                        }
 
+                        showCart.Items.Add(c);
+                    }
+                }
+            }
         }
     }
 }
