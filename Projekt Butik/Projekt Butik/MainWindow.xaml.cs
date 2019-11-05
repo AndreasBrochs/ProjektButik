@@ -245,10 +245,12 @@ namespace Projekt_Butik
             cart.shoppingCart.Clear();
             totalPrice = 0;
             totalPriceBlock.Text = $"Totalt Pris: {totalPrice}kr";
-
-            for(int i = 0; i <= usedCodes.Count; i++)
+            if (usedCodes.Count > 0)
             {
-                usedCodes.Remove(usedCodes[i]);
+                for (int i = 0; i <= usedCodes.Count; i++)
+                {
+                    usedCodes.Remove(usedCodes[i]);
+                }
             }
             showCart.Items.Clear();
         }
