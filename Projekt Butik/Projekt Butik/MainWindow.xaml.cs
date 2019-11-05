@@ -357,12 +357,13 @@ namespace Projekt_Butik
             string buy = "*************KVITTO***************\n\n";
             string thanks = "Tack för ditt köp, välkommen åter!";
             string receipt = "";
+            string total = $"Summa: {totalPrice}\n";
             foreach(KeyValuePair<string, int> r in cart.shoppingCart)
             {
-
-                receipt += $"{r}\n";
+                int price = productlist.Where(p => p.info == r.Key).Select(p => p.price).First();
+                receipt += $"{r} {r.Value * price}\n";
             }
-            MessageBox.Show(buy + receipt + thanks);
+            MessageBox.Show(buy + receipt + total + thanks);
             if (File.Exists(CartFilePath))
             {
                 File.Delete(CartFilePath);
