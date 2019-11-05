@@ -91,7 +91,7 @@ namespace Projekt_Butik
             }
             header = new TextBox
             {
-                Text = "Welcome to the store!",
+                Text = "Välkommen till Gitarrbutiken!",
                 TextAlignment = TextAlignment.Center,
                 FontSize = 20,
                 FontFamily = new FontFamily("Verdana"),
