@@ -30,6 +30,7 @@ namespace Projekt_Butik
         TextBox nrProducts;
         TextBox discount;
         Button addRemove;
+        Button buy;
         TextBlock totalPriceBlock;
         DataTable dataTable;
 
@@ -253,6 +254,7 @@ namespace Projekt_Butik
                 }
             }
             showCart.Items.Clear();
+            buy.IsEnabled = false;
         }
         private void RemoveProduct_Click(object sender, RoutedEventArgs e)
         {
@@ -270,6 +272,10 @@ namespace Projekt_Butik
                         cart.shoppingCart.Remove(key.Key);
                         showCart.Items.Remove(showCart.SelectedItem);
                         totalPriceBlock.Text = $"Totalt Pris: {totalPrice}";
+                        if (showCart.Items.IsEmpty)
+                        {
+                            buy.IsEnabled = false;
+                        }
                         break;
                     }
                 }
@@ -284,7 +290,8 @@ namespace Projekt_Butik
                         totalPriceBlock.Text = $"Totalt Pris: {totalPrice}";
                         break;
                     }
-                }   
+                }  
+                
             }
             
             catch
@@ -348,14 +355,16 @@ namespace Projekt_Butik
             };
             wrapPanel.Children.Add(totalPriceBlock);
 
-            addRemove = new Button
+            buy = new Button
             {
                 Content = "KÖP",
                 Margin = defaultMargin,
-                Padding = new Thickness(10)
+                Padding = new Thickness(10),
+                IsEnabled = false,
+                
             };
-            wrapPanel.Children.Add(addRemove);
-            addRemove.Click += Buy_Click;
+            wrapPanel.Children.Add(buy);
+            buy.Click += Buy_Click;
         }
         private void Buy_Click(object sender, RoutedEventArgs e)
         {
@@ -458,11 +467,13 @@ namespace Projekt_Butik
         }
         private void AddToCart_Click(object sender, RoutedEventArgs e)
         {
+            
             try
             {
                 shopAmount = int.Parse(nrProducts.Text);
                 if (shopAmount > 0)
                 {
+                    buy.IsEnabled = true;
                     showCart.Items.Clear();
                     string temp = productlist[shopIndex].info;
                     if (cart.shoppingCart.ContainsKey(temp))
@@ -485,6 +496,7 @@ namespace Projekt_Butik
                     {
                         showCart.Items.Add(discount);
                     }
+                    
                 }
                 else
                 {
