@@ -358,6 +358,15 @@ namespace Projekt_Butik
         }
         private void Buy_Click(object sender, RoutedEventArgs e)
         {
+            string buy = "*************KVITTO***************\n\n";
+            string thanks = "Tack för ditt köp, välkommen åter!";
+            string receipt = "";
+            foreach(KeyValuePair<string, int> r in cart.shoppingCart)
+            {
+
+                receipt += $"{r}\n";
+            }
+            MessageBox.Show(buy + receipt + thanks);
             if (File.Exists(CartFilePath))
             {
                 File.Delete(CartFilePath);
@@ -512,9 +521,9 @@ namespace Projekt_Butik
             discountCodes = new Dictionary<string, int>();
             for (int i = 0; i < path.Length; i++)
             {
-                string[] temp = path[i].Split(';');
-                int tempNr = int.Parse(temp[1]);
-                discountCodes.Add(temp[0], tempNr);
+                string[] discountName = path[i].Split(';');
+                int discountAmount = int.Parse(discountName[1]);
+                discountCodes.Add(discountName[0], discountAmount);
             }
         }
         public void CreateProducts()
