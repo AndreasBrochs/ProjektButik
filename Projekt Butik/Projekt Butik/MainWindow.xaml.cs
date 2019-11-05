@@ -291,14 +291,12 @@ namespace Projekt_Butik
                         break;
                     }
                 }  
-                
             }
             
             catch
             {
                 System.Media.SystemSounds.Exclamation.Play();
             }
-          
         }
         public void ControllsBuy()
         {
