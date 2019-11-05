@@ -242,34 +242,30 @@ namespace Projekt_Butik
         }
         private void EmptyCart_Click(object sender, RoutedEventArgs e)
         {
-            showCart.Items.Clear();
             cart.shoppingCart.Clear();
             totalPrice = 0;
             totalPriceBlock.Text = $"Totalt Pris: {totalPrice}kr";
+
+            for(int i = 0; i <= usedCodes.Count; i++)
+            {
+                usedCodes.Remove(usedCodes[i]);
+            }
+            showCart.Items.Clear();
         }
         private void RemoveProduct_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                //foreach (KeyValuePair<string, int> pair in discountCodes)
-                //{
-                //    string[] temp;
-                //    string test = "";
-                //    for (int i = 0; i < showCart.Items.Count; i++)
-                //    {
-                //        test = showCart.Items.ToString();
-                //        temp = test.Split(' ');
-                //        if (temp.Contains(pair.Key))
-                //        {
-                //            totalPrice += pair.Value;
-                //            usedCodes.Remove(pair.Key);
-                //            totalPriceBlock.Text = $"Totalt Pris: {totalPrice}";
-                //        }
-                //    }
-                //} 
-                //denna kod funkar inte. tanken är att den ska hitta om rabbatkoden ligger i kundvagnen 
-                //och om man tar bort rabbatkoden ska priset återgå till det normala
-
+                foreach (KeyValuePair<string, int> pair in discountCodes)
+                {
+                    string temp = (string)showCart.SelectedItem;
+                    if (temp == pair.Key)
+                    {
+                        totalPrice += pair.Value;
+                        usedCodes.Remove(pair.Key);
+                        totalPriceBlock.Text = $"Totalt Pris: {totalPrice}";
+                    }
+                }
                 string remove = showCart.SelectedItem.ToString();
                 cart.shoppingCart.Remove(remove);
                 foreach (KeyValuePair<string, int> key in cart.shoppingCart)
@@ -383,7 +379,7 @@ namespace Projekt_Butik
                             totalPriceBlock.Text = $"Totalt Pris: {totalPrice}";
                             usedCodes.Add(discount.Text);
                             //om man lägger till en produkt efter att man skrivit in koden försvinner koden från listan. fixa senare.
-                            showCart.Items.Add($"Koden {pair.Key} ger {pair.Value}kr rabatt");
+                            showCart.Items.Add(pair.Key);
                         }
                         else
                         {
@@ -465,6 +461,10 @@ namespace Projekt_Butik
                     foreach (KeyValuePair<string, int> key in cart.shoppingCart)
                     {
                         showCart.Items.Add(key);
+                    }
+                    foreach (string discount in usedCodes)
+                    {
+                        showCart.Items.Add(discount);
                     }
                 }
                 else
