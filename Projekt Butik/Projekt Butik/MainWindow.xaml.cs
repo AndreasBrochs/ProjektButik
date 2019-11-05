@@ -64,7 +64,7 @@ namespace Projekt_Butik
             Height = 700;
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
             BasicLayout();
-            
+
             ControllsProductsInStore();
             ControllsCart();
             ControllsBuy();
@@ -363,7 +363,7 @@ namespace Projekt_Butik
             string thanks = "Tack för ditt köp, välkommen åter!\n";
             string receipt = "";
             string total = $"Summa: {totalPrice}\n";
-            foreach(KeyValuePair<string, int> r in cart.shoppingCart)
+            foreach (KeyValuePair<string, int> r in cart.shoppingCart)
             {
                 int price = productlist.Where(p => p.info == r.Key).Select(p => p.price).First();
                 receipt += $"{r} {r.Value * price}\n";
@@ -376,9 +376,11 @@ namespace Projekt_Butik
         }
         private void Discount_Click(object sender, RoutedEventArgs e)
         {
+            bool result = false;
             if (usedCodes.Contains(discount.Text))
             {
                 MessageBox.Show("Koden har redan använts");
+                result = true;
             }
             else
             {
@@ -386,6 +388,7 @@ namespace Projekt_Butik
                 {
                     if (pair.Key == discount.Text)
                     {
+                        result = true;
                         if (showCart.Items.Count > 0)
                         {
                             totalPrice -= pair.Value;
@@ -399,6 +402,10 @@ namespace Projekt_Butik
                         }
                     }
                 }
+            }
+            if (result == false)
+            {
+                MessageBox.Show("Koden känns inte igen");
             }
         }
         public void ControllsProductsInStore()
@@ -574,22 +581,22 @@ namespace Projekt_Butik
         }
         public void LoadProducts()
         {
-            if(File.Exists(CartFilePath))
+            if (File.Exists(CartFilePath))
             {
                 MessageBoxButton fileFound = MessageBoxButton.YesNo;
                 string title = "Kundvagn hittad";
                 string text = "Det finns redan en Kundvagnsfil sparad, vill du öppna den?";
                 System.Media.SystemSounds.Exclamation.Play();
-                var message = MessageBox.Show(text, title, fileFound);                
+                var message = MessageBox.Show(text, title, fileFound);
                 if (message == MessageBoxResult.Yes)
                 {
                     string[] loadCart = File.ReadAllLines(CartFilePath);
-                    for(int i = 0; i < loadCart.Length; i++)
+                    for (int i = 0; i < loadCart.Length; i++)
                     {
                         string[] temp = loadCart[i].Split(';');
                         cart.shoppingCart.Add(temp[0], int.Parse(temp[1]));
                     }
-                    foreach(KeyValuePair<string, int> c in cart.shoppingCart)
+                    foreach (KeyValuePair<string, int> c in cart.shoppingCart)
                     {
                         int getPrice = productlist.Where(p => p.info.Contains(c.Key)).Select(p => p.price).First();
                         totalPrice += c.Value * getPrice;
