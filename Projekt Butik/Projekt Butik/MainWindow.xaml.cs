@@ -258,6 +258,21 @@ namespace Projekt_Butik
         {
             try
             {
+                string remove = showCart.SelectedItem.ToString();
+                
+                foreach (KeyValuePair<string, int> key in cart.shoppingCart)
+                {
+                    if (key.ToString() == remove)
+                    {
+                        int price = productlist.Where(p => p.info.Contains(key.Key)).Select(p => p.price).First();
+                        
+                        totalPrice -= key.Value * price;
+                        cart.shoppingCart.Remove(key.Key);
+                        showCart.Items.Remove(showCart.SelectedItem);
+                        totalPriceBlock.Text = $"Totalt Pris: {totalPrice}";
+                        break;
+                    }
+                }
                 foreach (KeyValuePair<string, int> pair in discountCodes)
                 {
                     string temp = (string)showCart.SelectedItem;
@@ -265,29 +280,18 @@ namespace Projekt_Butik
                     {
                         totalPrice += pair.Value;
                         usedCodes.Remove(pair.Key);
+                        showCart.Items.Remove(showCart.SelectedItem);
                         totalPriceBlock.Text = $"Totalt Pris: {totalPrice}";
-                    }
-                }
-                string remove = showCart.SelectedItem.ToString();
-                cart.shoppingCart.Remove(remove);
-                foreach (KeyValuePair<string, int> key in cart.shoppingCart)
-                {
-                    if (key.ToString() == remove)
-                    {
-                        var price = productlist.Where(p => p.info.Contains(key.Key)).Select(p => p.price).ToList();
-                        int price2 = price.Max();
-                        totalPrice -= key.Value * price2;
-                        cart.shoppingCart.Remove(key.Key);
                         break;
                     }
-                }
-                showCart.Items.Remove(showCart.SelectedItem);
-                totalPriceBlock.Text = $"Totalt Pris: {totalPrice}";
+                }   
             }
+            
             catch
             {
                 System.Media.SystemSounds.Exclamation.Play();
             }
+          
         }
         public void ControllsBuy()
         {
@@ -356,7 +360,7 @@ namespace Projekt_Butik
         private void Buy_Click(object sender, RoutedEventArgs e)
         {
             string buy = "*************KVITTO***************\n\n";
-            string thanks = "Tack för ditt köp, välkommen åter!";
+            string thanks = "Tack för ditt köp, välkommen åter!\n";
             string receipt = "";
             string total = $"Summa: {totalPrice}\n";
             foreach(KeyValuePair<string, int> r in cart.shoppingCart)
@@ -587,8 +591,8 @@ namespace Projekt_Butik
                     }
                     foreach(KeyValuePair<string, int> c in cart.shoppingCart)
                     {
-                        var getPrice = productlist.Where(p => p.info.Contains(c.Key)).Select(p => p.price).ToList();
-                        totalPrice += c.Value * getPrice.Max();
+                        int getPrice = productlist.Where(p => p.info.Contains(c.Key)).Select(p => p.price).First();
+                        totalPrice += c.Value * getPrice;
 
                         showCart.Items.Add(c);
                     }
