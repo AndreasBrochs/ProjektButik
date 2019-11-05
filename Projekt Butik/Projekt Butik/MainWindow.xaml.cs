@@ -372,7 +372,6 @@ namespace Projekt_Butik
         }
         private void Discount_Click(object sender, RoutedEventArgs e)
         {
-            int amount = 0;
             if (usedCodes.Contains(discount.Text))
             {
                 MessageBox.Show("Koden har redan använts");
@@ -385,8 +384,7 @@ namespace Projekt_Butik
                     {
                         if (showCart.Items.Count > 0)
                         {
-                            amount += pair.Value;
-                            totalPrice -= amount;
+                            totalPrice -= pair.Value;
                             totalPriceBlock.Text = $"Totalt Pris: {totalPrice}";
                             usedCodes.Add(discount.Text);
                             showCart.Items.Add(pair.Key);
