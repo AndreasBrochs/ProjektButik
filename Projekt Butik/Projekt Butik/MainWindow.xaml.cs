@@ -91,7 +91,7 @@ namespace Projekt_Butik
             }
             header = new TextBox
             {
-                Text = "Welcome to the store!",
+                Text = "Välkommen till Gitarrbutiken!",
                 TextAlignment = TextAlignment.Center,
                 FontSize = 20,
                 FontFamily = new FontFamily("Verdana"),
@@ -275,7 +275,6 @@ namespace Projekt_Butik
                     if (key.ToString() == remove)
                     {
                         var price = productlist.Where(p => p.info.Contains(key.Key)).Select(p => p.price).ToList();
-
                         int price2 = price.Max();
                         totalPrice -= key.Value * price2;
                         cart.shoppingCart.Remove(key.Key);
@@ -390,7 +389,6 @@ namespace Projekt_Butik
                             totalPrice -= amount;
                             totalPriceBlock.Text = $"Totalt Pris: {totalPrice}";
                             usedCodes.Add(discount.Text);
-                            //om man lägger till en produkt efter att man skrivit in koden försvinner koden från listan. fixa senare.
                             showCart.Items.Add(pair.Key);
                         }
                         else
