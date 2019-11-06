@@ -516,7 +516,6 @@ namespace Projekt_Butik
                     {
                         showCart.Items.Add(discount);
                     }
-
                 }
                 else
                 {
