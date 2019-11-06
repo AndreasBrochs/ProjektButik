@@ -366,9 +366,9 @@ namespace Projekt_Butik
             foreach (KeyValuePair<string, int> r in cart.shoppingCart)
             {
                 int price = productlist.Where(p => p.info == r.Key).Select(p => p.price).First();
-                receipt += $"{r} {r.Value * price}\n";
+                receipt += $"{r.ToString()} {r.Value * price}\n";
             }
-            MessageBox.Show(buy + receipt + total + thanks);
+            MessageBox.Show(buy + receipt.PadRight(20) + total + thanks);
             if (File.Exists(CartFilePath))
             {
                 File.Delete(CartFilePath);
