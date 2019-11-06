@@ -370,12 +370,16 @@ namespace Projekt_Butik
             string thanks = "Tack för ditt köp, välkommen åter!\n";
             string receipt = "";
             string total = $"Summa: {totalPrice}\n";
+            int test = cart.shoppingCart.Max(p => p.Key.Length);
+            int longestProduct = cart.shoppingCart.Max(p => p.Key.Length);
             foreach (KeyValuePair<string, int> r in cart.shoppingCart)
             {
-                int price = productlist.Where(p => p.info == r.Key).Select(p => p.price).First();
-                receipt += $"{r.ToString()} {r.Value * price}\n";
+                int price = productlist.Where(p => p.info == r.Key).Select(p => p.price).First() * r.Value;
+                
+                receipt += r.Key.ToString() + r.Value.ToString() + price +"\n";
             }
-            MessageBox.Show(buy + receipt.PadRight(20) + total + thanks);
+            MessageBox.Show(buy + receipt + total + thanks);
+            
             if (File.Exists(CartFilePath))
             {
                 File.Delete(CartFilePath);
@@ -613,6 +617,7 @@ namespace Projekt_Butik
 
                         showCart.Items.Add(c);
                     }
+                    buy.IsEnabled = true;
                     totalPriceBlock.Text = $"Totalt Pris: {totalPrice}kr";
                 }
             }
