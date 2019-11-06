@@ -37,24 +37,31 @@ namespace Projekt_Butik
         public int shopIndex;
         public int shopAmount = 1;
         private int TotalPrice = 0;
-        public int totalPrice = 0;
-        //{
-        //    get
-        //    {
-        //        return TotalPrice;
-        //    }
-        //    set
-        //    {
-        //        if (value >= 0)
-        //        {
-        //            TotalPrice = totalPrice;
-        //        }
-        //        else if (totalPrice < 0)
-        //        {
-        //            MessageBox.Show("Nej");
-        //        }
-        //    }
-        //}
+        public int totalPrice
+        {
+            get
+            {
+                return TotalPrice;
+            }
+            set
+            {
+                if (value >= 0)
+                {
+                    TotalPrice = value;
+                }
+                else if (value < 0)
+                {
+                    showCart.Items.Clear();
+                    totalPrice = 0;
+                    totalPriceBlock.Text = $"Totalt Pris: {totalPrice}";
+                    for (int i = 0; i < usedCodes.Count; i++)
+                    {
+                        usedCodes.Remove(usedCodes[i]);
+                    }
+                    buy.IsEnabled = false;
+                }
+            }
+        }
 
 
         private ImageSource imageSource;
@@ -67,7 +74,6 @@ namespace Projekt_Butik
         List<string> usedCodes = new List<string> { };
         public Dictionary<string, int> discountCodes;
         public Cart cart = new Cart();
-
         const string CartFilePath = @"C:\Windows\Temp\Cart.csv";
 
         private Thickness defaultMargin = new Thickness(5);
@@ -311,17 +317,17 @@ namespace Projekt_Butik
                         break;
                     }
                 }
-                if (totalPrice < 0)
-                {
-                    showCart.Items.Clear();
-                    totalPrice = 0;
-                    totalPriceBlock.Text = $"Totalt Pris: {totalPrice}";
-                    for (int i = 0; i < usedCodes.Count; i++)
-                    {
-                        usedCodes.Remove(usedCodes[i]);
-                    }
-                    buy.IsEnabled = false;
-                }
+                //if (totalPrice < 0)
+                //{
+                //    showCart.Items.Clear();
+                //    totalPrice = 0;
+                //    totalPriceBlock.Text = $"Totalt Pris: {totalPrice}";
+                //    for (int i = 0; i < usedCodes.Count; i++)
+                //    {
+                //        usedCodes.Remove(usedCodes[i]);
+                //    }
+                //    buy.IsEnabled = false;
+                //}
             }
 
             catch
