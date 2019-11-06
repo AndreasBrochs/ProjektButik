@@ -62,8 +62,6 @@ namespace Projekt_Butik
                 }
             }
         }
-
-
         private ImageSource imageSource;
         private Image Image;
 
@@ -317,19 +315,7 @@ namespace Projekt_Butik
                         break;
                     }
                 }
-                //if (totalPrice < 0)
-                //{
-                //    showCart.Items.Clear();
-                //    totalPrice = 0;
-                //    totalPriceBlock.Text = $"Totalt Pris: {totalPrice}";
-                //    for (int i = 0; i < usedCodes.Count; i++)
-                //    {
-                //        usedCodes.Remove(usedCodes[i]);
-                //    }
-                //    buy.IsEnabled = false;
-                //}
             }
-
             catch
             {
                 System.Media.SystemSounds.Exclamation.Play();
