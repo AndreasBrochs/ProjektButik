@@ -36,7 +36,32 @@ namespace Projekt_Butik
 
         public int shopIndex;
         public int shopAmount = 1;
-        public int totalPrice = 0;
+        private int TotalPrice = 0;
+        public int totalPrice
+        {
+            get
+            {
+                return TotalPrice;
+            }
+            set
+            {
+                if (value >= 0)
+                {
+                    TotalPrice = value;
+                }
+                else if (value < 0)
+                {
+                    showCart.Items.Clear();
+                    totalPrice = 0;
+                    totalPriceBlock.Text = $"Totalt Pris: {totalPrice}";
+                    for (int i = 0; i < usedCodes.Count; i++)
+                    {
+                        usedCodes.Remove(usedCodes[i]);
+                    }
+                    buy.IsEnabled = false;
+                }
+            }
+        }
         private ImageSource imageSource;
         private Image Image;
 
@@ -47,7 +72,6 @@ namespace Projekt_Butik
         List<string> usedCodes = new List<string> { };
         public Dictionary<string, int> discountCodes;
         public Cart cart = new Cart();
-
         const string CartFilePath = @"C:\Windows\Temp\Cart.csv";
 
         private Thickness defaultMargin = new Thickness(5);
@@ -261,13 +285,13 @@ namespace Projekt_Butik
             try
             {
                 string remove = showCart.SelectedItem.ToString();
-                
+
                 foreach (KeyValuePair<string, int> key in cart.shoppingCart)
                 {
                     if (key.ToString() == remove)
                     {
                         int price = productlist.Where(p => p.info.Contains(key.Key)).Select(p => p.price).First();
-                        
+
                         totalPrice -= key.Value * price;
                         cart.shoppingCart.Remove(key.Key);
                         showCart.Items.Remove(showCart.SelectedItem);
@@ -290,9 +314,8 @@ namespace Projekt_Butik
                         totalPriceBlock.Text = $"Totalt Pris: {totalPrice}";
                         break;
                     }
-                }  
+                }
             }
-            
             catch
             {
                 System.Media.SystemSounds.Exclamation.Play();
@@ -359,7 +382,6 @@ namespace Projekt_Butik
                 Margin = defaultMargin,
                 Padding = new Thickness(10),
                 IsEnabled = false,
-                
             };
             wrapPanel.Children.Add(buy);
             buy.Click += Buy_Click;
@@ -469,7 +491,7 @@ namespace Projekt_Butik
         }
         private void AddToCart_Click(object sender, RoutedEventArgs e)
         {
-            
+
             try
             {
                 shopAmount = int.Parse(nrProducts.Text);
@@ -498,7 +520,6 @@ namespace Projekt_Butik
                     {
                         showCart.Items.Add(discount);
                     }
-                    
                 }
                 else
                 {
