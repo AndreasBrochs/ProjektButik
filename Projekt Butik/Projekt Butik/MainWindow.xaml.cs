@@ -251,7 +251,7 @@ namespace Projekt_Butik
 
             totalPriceBlock = new TextBlock
             {
-                Text = String.Format("Totalpris: {0: ### ### ###}", totalPrice),
+                Text = $"Totaltpris: {totalPrice} kr",
                 VerticalAlignment = VerticalAlignment.Center,
                 Width = 120,
                
@@ -337,14 +337,14 @@ namespace Projekt_Butik
                         cart.shoppingCart[temp] += shopAmount;
                         totalPrice += shopAmount * productlist[shopIndex].price;
                         //totalPriceBlock.Text = $"Totalt Pris: {totalPrice}kr";
-                        totalPriceBlock.Text = String.Format("Totalpris {0: ### ### ###}", totalPrice);
+                        totalPriceBlock.Text = String.Format("Totalpris {0: ### ### ###}", totalPrice + " kr");
                     }
                     else
                     {
                         cart.shoppingCart.Add(temp, shopAmount);
                         totalPrice += shopAmount * productlist[shopIndex].price;
                         //totalPriceBlock.Text = $"Totalt Pris: {totalPrice}kr";
-                        totalPriceBlock.Text = String.Format("Totalpris {0: ### ### ###}", totalPrice);
+                        totalPriceBlock.Text = String.Format("Totalpris {0: ### ### ###}", totalPrice + " kr");
                     }
                     foreach (KeyValuePair<string, int> key in cart.shoppingCart)
                     {
@@ -455,7 +455,7 @@ namespace Projekt_Butik
         {
             cart.shoppingCart.Clear();
             totalPrice = 0;
-            totalPriceBlock.Text = $"Totalt Pris: {totalPrice}kr";
+            totalPriceBlock.Text = $"Totaltpris: {totalPrice} kr";
             if (usedCodes.Count > 0)
             {
                 for (int i = 0; i <= usedCodes.Count; i++)
@@ -511,7 +511,7 @@ namespace Projekt_Butik
                         cart.shoppingCart.Remove(key.Key);
                         showCart.Items.Remove(showCart.SelectedItem);
                         //totalPriceBlock.Text = $"Totaltpris: {totalPrice}";
-                        totalPriceBlock.Text = string.Format("Totalpris: {0: ### ### ###}", totalPrice);
+                        totalPriceBlock.Text = string.Format("Totalpris: {0: ### ### ###}", totalPrice + " kr");
                         if (showCart.Items.IsEmpty)
                         {
                             buy.IsEnabled = false;
@@ -528,7 +528,7 @@ namespace Projekt_Butik
                         usedCodes.Remove(pair.Key);
                         showCart.Items.Remove(showCart.SelectedItem);
                         //totalPriceBlock.Text = $"Totalt Pris: {totalPrice}";
-                        totalPriceBlock.Text = string.Format("Totalpris: {0: ### ### ###}", totalPrice);
+                        totalPriceBlock.Text = string.Format("Totalpris: {0: ### ### ###}", totalPrice +" kr");
                         break;
                     }
                 }
