@@ -348,6 +348,7 @@ namespace Projekt_Butik
                 Width = 75 //to keep the box the same size when writing in it
             };
             wrapPanel.Children.Add(discount);
+            discount.SelectAll();
             Grid.SetColumn(discount, 5);
             Grid.SetRow(discount, 6);
 
@@ -372,9 +373,12 @@ namespace Projekt_Butik
             {
                 Text = $"Totalt Pris: {totalPrice}kr",
                 VerticalAlignment = VerticalAlignment.Center,
-                Width = 120
+                Width = 120,
+               
             };
             wrapPanel.Children.Add(totalPriceBlock);
+            
+            
 
             buy = new Button
             {
@@ -382,6 +386,7 @@ namespace Projekt_Butik
                 Margin = defaultMargin,
                 Padding = new Thickness(10),
                 IsEnabled = false,
+                
             };
             wrapPanel.Children.Add(buy);
             buy.Click += Buy_Click;
