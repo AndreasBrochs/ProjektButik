@@ -132,11 +132,11 @@ namespace Projekt_Butik
 
             dataTable = new DataTable();
             dataTable.Columns.AddRange(new DataColumn[3]
-            { new DataColumn ("Brand", typeof(string)), new DataColumn ("Info", typeof(string)), new DataColumn("Price", typeof(int))});
+            { new DataColumn ("Brand", typeof(string)), new DataColumn ("Info", typeof(string)), new DataColumn("Price", typeof(string))});
 
             for (int i = 0; i < productlist.Count; i++)
             {
-                dataTable.Rows.Add(new object[] { productlist[i].brand, productlist[i].info, productlist[i].price });
+                dataTable.Rows.Add(new object[] { productlist[i].brand, productlist[i].info, String.Format("{0:### ###}", productlist[i].price) });
             };
 
             grid.Children.Add(dataGrid);
@@ -251,7 +251,7 @@ namespace Projekt_Butik
 
             totalPriceBlock = new TextBlock
             {
-                Text = $"Totalt Pris: {totalPrice}kr",
+                Text = String.Format("Totalpris: {0: ### ### ###}", totalPrice),
                 VerticalAlignment = VerticalAlignment.Center,
                 Width = 120,
                
@@ -336,13 +336,15 @@ namespace Projekt_Butik
                     {
                         cart.shoppingCart[temp] += shopAmount;
                         totalPrice += shopAmount * productlist[shopIndex].price;
-                        totalPriceBlock.Text = $"Totalt Pris: {totalPrice}kr";
+                        //totalPriceBlock.Text = $"Totalt Pris: {totalPrice}kr";
+                        totalPriceBlock.Text = String.Format("Totalpris {0: ### ### ###}", totalPrice);
                     }
                     else
                     {
                         cart.shoppingCart.Add(temp, shopAmount);
                         totalPrice += shopAmount * productlist[shopIndex].price;
-                        totalPriceBlock.Text = $"Totalt Pris: {totalPrice}kr";
+                        //totalPriceBlock.Text = $"Totalt Pris: {totalPrice}kr";
+                        totalPriceBlock.Text = String.Format("Totalpris {0: ### ### ###}", totalPrice);
                     }
                     foreach (KeyValuePair<string, int> key in cart.shoppingCart)
                     {
@@ -374,7 +376,8 @@ namespace Projekt_Butik
             foreach (KeyValuePair<string, int> r in cart.shoppingCart)
             {
                 int price = productlist.Where(p => p.info == r.Key).Select(p => p.price).First() * r.Value;
-                receipt += r.Key.ToString() + "\n" +"Antal: " + r.Value.ToString() + "  Pris: " + price +"\n\n";
+                receipt += r.Key.ToString() + "\n" + "Antal: " + r.Value.ToString() + "  Pris: ";
+                receipt += String.Format("{0: ### ### ### ###}\n\n", price);
             }
 
             MessageBox.Show(buy + mark + receipt + mark + total + mark + thanks);
@@ -507,7 +510,8 @@ namespace Projekt_Butik
                         totalPrice -= key.Value * price;
                         cart.shoppingCart.Remove(key.Key);
                         showCart.Items.Remove(showCart.SelectedItem);
-                        totalPriceBlock.Text = $"Totalt Pris: {totalPrice}";
+                        //totalPriceBlock.Text = $"Totaltpris: {totalPrice}";
+                        totalPriceBlock.Text = string.Format("Totalpris: {0: ### ### ###}", totalPrice);
                         if (showCart.Items.IsEmpty)
                         {
                             buy.IsEnabled = false;
@@ -523,7 +527,8 @@ namespace Projekt_Butik
                         totalPrice += pair.Value;
                         usedCodes.Remove(pair.Key);
                         showCart.Items.Remove(showCart.SelectedItem);
-                        totalPriceBlock.Text = $"Totalt Pris: {totalPrice}";
+                        //totalPriceBlock.Text = $"Totalt Pris: {totalPrice}";
+                        totalPriceBlock.Text = string.Format("Totalpris: {0: ### ### ###}", totalPrice);
                         break;
                     }
                 }
@@ -648,7 +653,8 @@ namespace Projekt_Butik
                         showCart.Items.Add(c);
                     }
                     buy.IsEnabled = true;
-                    totalPriceBlock.Text = $"Totalt Pris: {totalPrice}kr";
+                    //totalPriceBlock.Text = $"Totalt Pris: {totalPrice}kr";
+                    totalPriceBlock.Text = string.Format("Totalpris: {0: ### ### ###}", totalPrice);
                 }
             }
         }
