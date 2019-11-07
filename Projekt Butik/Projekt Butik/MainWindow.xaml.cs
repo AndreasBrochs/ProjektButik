@@ -150,7 +150,7 @@ namespace Projekt_Butik
             dataGrid.CanUserResizeRows = false;
             dataGrid.ItemsSource = dataTable.DefaultView;
 
-            dataGrid.GotMouseCapture += DataGrid_GotMouseCapture;
+            dataGrid.GotMouseCapture += DataGridProductClick;
 
             showCart = new ListBox
             {
@@ -162,36 +162,7 @@ namespace Projekt_Butik
             Grid.SetRow(showCart, 2);
             Grid.SetRowSpan(showCart, 4);
         }
-        private void DataGrid_GotMouseCapture(object sender, MouseEventArgs e)
-        {
-            DataGrid data = (DataGrid)sender;
-
-            if (data.SelectedIndex > -1)
-            {
-                var temp = data.SelectedItem;
-                shopIndex = dataGrid.SelectedIndex;
-
-                imageSource = new BitmapImage(new Uri(productlist[data.SelectedIndex].soruce.ToString(), UriKind.Relative));
-
-                grid.Children.Remove(Image);
-
-                Image = new Image
-                {
-                    Source = imageSource,
-                    HorizontalAlignment = HorizontalAlignment.Stretch,
-                    VerticalAlignment = VerticalAlignment.Stretch,
-                    Margin = defaultMargin
-                };
-
-                grid.Children.Add(Image);
-                Grid.SetColumn(Image, 4);
-                Grid.SetRow(Image, 3);
-                Grid.SetColumn(Image, 2);
-                Grid.SetColumnSpan(Image, 2);
-                Grid.SetRow(Image, 2);
-                Grid.SetRowSpan(Image, 6);
-            }
-        }
+        
         public void ControllsCart()
         {
             wrapPanel = new WrapPanel
@@ -231,55 +202,7 @@ namespace Projekt_Butik
             wrapPanel.Children.Add(addRemove);
             addRemove.Click += SaveCart_Click;
         }
-        private void SaveCart_Click(object sender, RoutedEventArgs e)
-        {
-            if (File.Exists(CartFilePath))
-            {
-                MessageBoxButton fileFound = MessageBoxButton.YesNo;
-                string title = "Kundvagn hittad";
-                string text = "Det finns redan en Kundvagnsfil, vill du ersätta den med aktuell kundvagn ?";
-                var message = MessageBox.Show(text, title, fileFound);
-                if (message == MessageBoxResult.Yes)
-                {
-                    List<string> cartList = new List<string>();
-                    foreach (KeyValuePair<string, int> pair in cart.shoppingCart)
-                    {
-                        string name = pair.Key;
-                        int amount = pair.Value;
-                        cartList.Add(name + ";" + amount);
-                    }
-                    File.WriteAllLines(CartFilePath, cartList);
-                    MessageBox.Show("Din kundvagn är nu sparad.");
-                }
-            }
-            else
-            {
-                List<string> cartList = new List<string>();
-                foreach (KeyValuePair<string, int> pair in cart.shoppingCart)
-                {
-                    string name = pair.Key;
-                    int amount = pair.Value;
-                    cartList.Add(name + ";" + amount);
-                }
-                File.WriteAllLines(CartFilePath, cartList);
-                MessageBox.Show("Din kundvagn är nu sparad.");
-            }
-        }
-        private void EmptyCart_Click(object sender, RoutedEventArgs e)
-        {
-            cart.shoppingCart.Clear();
-            totalPrice = 0;
-            totalPriceBlock.Text = $"Totalt Pris: {totalPrice}kr";
-            if (usedCodes.Count > 0)
-            {
-                for (int i = 0; i <= usedCodes.Count; i++)
-                {
-                    usedCodes.Remove(usedCodes[i]);
-                }
-            }
-            showCart.Items.Clear();
-            buy.IsEnabled = false;
-        }
+        
         private void RemoveProduct_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -391,27 +314,7 @@ namespace Projekt_Butik
             wrapPanel.Children.Add(buy);
             buy.Click += Buy_Click;
         }
-        private void Buy_Click(object sender, RoutedEventArgs e)
-        {
-            string buy = "*************KVITTO***************\n\n";
-            string thanks = "Tack för ditt köp, välkommen åter!\n";
-            string receipt = "";
-            string total = $"Summa: {totalPrice}\n";
-            int test = cart.shoppingCart.Max(p => p.Key.Length);
-            int longestProduct = cart.shoppingCart.Max(p => p.Key.Length);
-            foreach (KeyValuePair<string, int> r in cart.shoppingCart)
-            {
-                int price = productlist.Where(p => p.info == r.Key).Select(p => p.price).First() * r.Value;
-                
-                receipt += r.Key.ToString() + r.Value.ToString() + price +"\n";
-            }
-            MessageBox.Show(buy + receipt + total + thanks);
-            
-            if (File.Exists(CartFilePath))
-            {
-                File.Delete(CartFilePath);
-            }
-        }
+        
         private void Discount_Click(object sender, RoutedEventArgs e)
         {
             bool result = false;
@@ -494,6 +397,7 @@ namespace Projekt_Butik
             wrapPanel.Children.Add(addRemove);
             addRemove.Click += AddToCart_Click;
         }
+        //Buttons
         private void AddToCart_Click(object sender, RoutedEventArgs e)
         {
 
@@ -536,6 +440,72 @@ namespace Projekt_Butik
                 nrProducts.Text = shopAmount.ToString();
             }
         }
+        private void Buy_Click(object sender, RoutedEventArgs e)
+        {
+            string buy = "*************KVITTO***************\n\n";
+            string thanks = "Tack för ditt köp, välkommen åter!\n";
+            string receipt = "";
+            string total = $"Summa: {totalPrice}\n";
+            int test = cart.shoppingCart.Max(p => p.Key.Length);
+            int longestProduct = cart.shoppingCart.Max(p => p.Key.Length);
+            foreach (KeyValuePair<string, int> r in cart.shoppingCart)
+            {
+                int price = productlist.Where(p => p.info == r.Key).Select(p => p.price).First() * r.Value;
+
+                receipt += r.Key.ToString() + r.Value.ToString() + price + "\n";
+            }
+            MessageBox.Show(buy + receipt + total + thanks);
+
+            if (File.Exists(CartFilePath))
+            {
+                File.Delete(CartFilePath);
+            }
+        }
+        private void DataGridProductClick(object sender, MouseEventArgs e)
+        {
+            DataGrid data = (DataGrid)sender;
+
+            if (data.SelectedIndex > -1)
+            {
+                var temp = data.SelectedItem;
+                shopIndex = dataGrid.SelectedIndex;
+
+                imageSource = new BitmapImage(new Uri(productlist[data.SelectedIndex].soruce.ToString(), UriKind.Relative));
+
+                grid.Children.Remove(Image);
+
+                Image = new Image
+                {
+                    Source = imageSource,
+                    HorizontalAlignment = HorizontalAlignment.Stretch,
+                    VerticalAlignment = VerticalAlignment.Stretch,
+                    Margin = defaultMargin
+                };
+
+                grid.Children.Add(Image);
+                Grid.SetColumn(Image, 4);
+                Grid.SetRow(Image, 3);
+                Grid.SetColumn(Image, 2);
+                Grid.SetColumnSpan(Image, 2);
+                Grid.SetRow(Image, 2);
+                Grid.SetRowSpan(Image, 6);
+            }
+        }
+        private void EmptyCart_Click(object sender, RoutedEventArgs e)
+        {
+            cart.shoppingCart.Clear();
+            totalPrice = 0;
+            totalPriceBlock.Text = $"Totalt Pris: {totalPrice}kr";
+            if (usedCodes.Count > 0)
+            {
+                for (int i = 0; i <= usedCodes.Count; i++)
+                {
+                    usedCodes.Remove(usedCodes[i]);
+                }
+            }
+            showCart.Items.Clear();
+            buy.IsEnabled = false;
+        }
         private void MinusProduct_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -565,6 +535,41 @@ namespace Projekt_Butik
                 MessageBox.Show("You must enter a number");
             }
         }
+        private void SaveCart_Click(object sender, RoutedEventArgs e)
+        {
+            if (File.Exists(CartFilePath))
+            {
+                MessageBoxButton fileFound = MessageBoxButton.YesNo;
+                string title = "Kundvagn hittad";
+                string text = "Det finns redan en Kundvagnsfil, vill du ersätta den med aktuell kundvagn ?";
+                var message = MessageBox.Show(text, title, fileFound);
+                if (message == MessageBoxResult.Yes)
+                {
+                    List<string> cartList = new List<string>();
+                    foreach (KeyValuePair<string, int> pair in cart.shoppingCart)
+                    {
+                        string name = pair.Key;
+                        int amount = pair.Value;
+                        cartList.Add(name + ";" + amount);
+                    }
+                    File.WriteAllLines(CartFilePath, cartList);
+                    MessageBox.Show("Din kundvagn är nu sparad.");
+                }
+            }
+            else
+            {
+                List<string> cartList = new List<string>();
+                foreach (KeyValuePair<string, int> pair in cart.shoppingCart)
+                {
+                    string name = pair.Key;
+                    int amount = pair.Value;
+                    cartList.Add(name + ";" + amount);
+                }
+                File.WriteAllLines(CartFilePath, cartList);
+                MessageBox.Show("Din kundvagn är nu sparad.");
+            }
+        }
+        
         public void CreateDiscount()
         {
             string[] path = File.ReadAllLines("discount.txt");
