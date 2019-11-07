@@ -33,6 +33,7 @@ namespace Projekt_Butik
         Button buy;
         TextBlock totalPriceBlock;
         DataTable dataTable;
+        MessageBox kvitto;
 
         public int shopIndex;
         public int shopAmount = 1;
@@ -82,6 +83,7 @@ namespace Projekt_Butik
             CreateDiscount();
             Start();
         }
+        //Grid and layout
         public void Start()
         {
             Title = "Gitarr butik";
@@ -162,7 +164,6 @@ namespace Projekt_Butik
             Grid.SetRow(showCart, 2);
             Grid.SetRowSpan(showCart, 4);
         }
-        
         public void ControllsCart()
         {
             wrapPanel = new WrapPanel
@@ -201,48 +202,6 @@ namespace Projekt_Butik
             };
             wrapPanel.Children.Add(addRemove);
             addRemove.Click += SaveCart_Click;
-        }
-        
-        private void RemoveProduct_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                string remove = showCart.SelectedItem.ToString();
-
-                foreach (KeyValuePair<string, int> key in cart.shoppingCart)
-                {
-                    if (key.ToString() == remove)
-                    {
-                        int price = productlist.Where(p => p.info.Contains(key.Key)).Select(p => p.price).First();
-
-                        totalPrice -= key.Value * price;
-                        cart.shoppingCart.Remove(key.Key);
-                        showCart.Items.Remove(showCart.SelectedItem);
-                        totalPriceBlock.Text = $"Totalt Pris: {totalPrice}";
-                        if (showCart.Items.IsEmpty)
-                        {
-                            buy.IsEnabled = false;
-                        }
-                        break;
-                    }
-                }
-                foreach (KeyValuePair<string, int> pair in discountCodes)
-                {
-                    string temp = (string)showCart.SelectedItem;
-                    if (temp == pair.Key)
-                    {
-                        totalPrice += pair.Value;
-                        usedCodes.Remove(pair.Key);
-                        showCart.Items.Remove(showCart.SelectedItem);
-                        totalPriceBlock.Text = $"Totalt Pris: {totalPrice}";
-                        break;
-                    }
-                }
-            }
-            catch
-            {
-                System.Media.SystemSounds.Exclamation.Play();
-            }
         }
         public void ControllsBuy()
         {
@@ -314,41 +273,6 @@ namespace Projekt_Butik
             wrapPanel.Children.Add(buy);
             buy.Click += Buy_Click;
         }
-        
-        private void Discount_Click(object sender, RoutedEventArgs e)
-        {
-            bool result = false;
-            if (usedCodes.Contains(discount.Text))
-            {
-                MessageBox.Show("Koden har redan använts");
-                result = true;
-            }
-            else
-            {
-                foreach (KeyValuePair<string, int> pair in discountCodes)
-                {
-                    if (pair.Key == discount.Text)
-                    {
-                        result = true;
-                        if (showCart.Items.Count > 0)
-                        {
-                            totalPrice -= pair.Value;
-                            totalPriceBlock.Text = $"Totalt Pris: {totalPrice}";
-                            usedCodes.Add(discount.Text);
-                            showCart.Items.Add(pair.Key);
-                        }
-                        else
-                        {
-                            MessageBox.Show("Du måste ha produkter i kundvagnen för att kunna använda en rabattkod");
-                        }
-                    }
-                }
-            }
-            if (result == false)
-            {
-                MessageBox.Show("Koden känns inte igen");
-            }
-        }
         public void ControllsProductsInStore()
         {
             wrapPanel = new WrapPanel //wrappanel for the controlls under the avaiable proucts
@@ -397,6 +321,7 @@ namespace Projekt_Butik
             wrapPanel.Children.Add(addRemove);
             addRemove.Click += AddToCart_Click;
         }
+
         //Buttons
         private void AddToCart_Click(object sender, RoutedEventArgs e)
         {
@@ -423,7 +348,7 @@ namespace Projekt_Butik
                     }
                     foreach (KeyValuePair<string, int> key in cart.shoppingCart)
                     {
-                        showCart.Items.Add(key);
+                        showCart.Items.Add(key).ToString();
                     }
                     foreach (string discount in usedCodes)
                     {
@@ -442,24 +367,24 @@ namespace Projekt_Butik
         }
         private void Buy_Click(object sender, RoutedEventArgs e)
         {
-            string buy = "*************KVITTO***************\n\n";
+            string buy = "***************KVITTO***************\n\n";
             string thanks = "Tack för ditt köp, välkommen åter!\n";
+            string mark = "-------------------------------------------\n";
             string receipt = "";
             string total = $"Summa: {totalPrice}\n";
-            int test = cart.shoppingCart.Max(p => p.Key.Length);
-            int longestProduct = cart.shoppingCart.Max(p => p.Key.Length);
+            
             foreach (KeyValuePair<string, int> r in cart.shoppingCart)
             {
                 int price = productlist.Where(p => p.info == r.Key).Select(p => p.price).First() * r.Value;
-
-                receipt += r.Key.ToString() + r.Value.ToString() + price + "\n";
+                receipt += r.Key.ToString() + "\n" +"Antal: " + r.Value.ToString() + "  Pris: " + price +"\n\n";
             }
-            MessageBox.Show(buy + receipt + total + thanks);
 
-            if (File.Exists(CartFilePath))
-            {
-                File.Delete(CartFilePath);
-            }
+            MessageBox.Show(buy + mark + receipt + mark + total + mark + thanks);
+
+            //if (File.Exists(CartFilePath))
+            //{
+            //    File.Delete(CartFilePath);
+            //}
         }
         private void DataGridProductClick(object sender, MouseEventArgs e)
         {
@@ -489,6 +414,40 @@ namespace Projekt_Butik
                 Grid.SetColumnSpan(Image, 2);
                 Grid.SetRow(Image, 2);
                 Grid.SetRowSpan(Image, 6);
+            }
+        }
+        private void Discount_Click(object sender, RoutedEventArgs e)
+        {
+            bool result = false;
+            if (usedCodes.Contains(discount.Text))
+            {
+                MessageBox.Show("Koden har redan använts");
+                result = true;
+            }
+            else
+            {
+                foreach (KeyValuePair<string, int> pair in discountCodes)
+                {
+                    if (pair.Key == discount.Text)
+                    {
+                        result = true;
+                        if (showCart.Items.Count > 0)
+                        {
+                            totalPrice -= pair.Value;
+                            totalPriceBlock.Text = $"Totalt Pris: {totalPrice}";
+                            usedCodes.Add(discount.Text);
+                            showCart.Items.Add(pair.Key);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Du måste ha produkter i kundvagnen för att kunna använda en rabattkod");
+                        }
+                    }
+                }
+            }
+            if (result == false)
+            {
+                MessageBox.Show("Koden känns inte igen");
             }
         }
         private void EmptyCart_Click(object sender, RoutedEventArgs e)
@@ -535,6 +494,47 @@ namespace Projekt_Butik
                 MessageBox.Show("You must enter a number");
             }
         }
+        private void RemoveProduct_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string remove = showCart.SelectedItem.ToString();
+
+                foreach (KeyValuePair<string, int> key in cart.shoppingCart)
+                {
+                    if (key.ToString() == remove)
+                    {
+                        int price = productlist.Where(p => p.info.Contains(key.Key)).Select(p => p.price).First();
+
+                        totalPrice -= key.Value * price;
+                        cart.shoppingCart.Remove(key.Key);
+                        showCart.Items.Remove(showCart.SelectedItem);
+                        totalPriceBlock.Text = $"Totalt Pris: {totalPrice}";
+                        if (showCart.Items.IsEmpty)
+                        {
+                            buy.IsEnabled = false;
+                        }
+                        break;
+                    }
+                }
+                foreach (KeyValuePair<string, int> pair in discountCodes)
+                {
+                    string temp = (string)showCart.SelectedItem;
+                    if (temp == pair.Key)
+                    {
+                        totalPrice += pair.Value;
+                        usedCodes.Remove(pair.Key);
+                        showCart.Items.Remove(showCart.SelectedItem);
+                        totalPriceBlock.Text = $"Totalt Pris: {totalPrice}";
+                        break;
+                    }
+                }
+            }
+            catch
+            {
+                System.Media.SystemSounds.Exclamation.Play();
+            }
+        }
         private void SaveCart_Click(object sender, RoutedEventArgs e)
         {
             if (File.Exists(CartFilePath))
@@ -570,6 +570,7 @@ namespace Projekt_Butik
             }
         }
         
+        //Read file methods
         public void CreateDiscount()
         {
             string[] path = File.ReadAllLines("discount.txt");
