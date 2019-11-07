@@ -33,7 +33,6 @@ namespace Projekt_Butik
         Button buy;
         TextBlock totalPriceBlock;
         DataTable dataTable;
-        MessageBox kvitto;
 
         public int shopIndex;
         public int shopAmount = 1;
@@ -67,7 +66,6 @@ namespace Projekt_Butik
         private Image Image;
 
         public string test = new string(' ', 1000);
-        public List<string> test1;
         public List<Product> productlist;
         public List<string> listBoxProducts;
         List<string> usedCodes = new List<string> { };
@@ -380,7 +378,7 @@ namespace Projekt_Butik
             }
 
             MessageBox.Show(buy + mark + receipt + mark + total + mark + thanks);
-
+            //Har kommenterat bort denna bara för att det skulle gå snabbare att kolla på kvittot hur det såg ut ;)
             //if (File.Exists(CartFilePath))
             //{
             //    File.Delete(CartFilePath);
