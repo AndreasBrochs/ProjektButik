@@ -337,14 +337,14 @@ namespace Projekt_Butik
                         cart.shoppingCart[temp] += shopAmount;
                         totalPrice += shopAmount * productlist[shopIndex].price;
                         //totalPriceBlock.Text = $"Totalt Pris: {totalPrice}kr";
-                        totalPriceBlock.Text = String.Format("Totalpris {0: ### ### ###}", totalPrice + " kr");
+                        totalPriceBlock.Text = String.Format("Totalpris {0: ### ### ###} kr", totalPrice);
                     }
                     else
                     {
                         cart.shoppingCart.Add(temp, shopAmount);
                         totalPrice += shopAmount * productlist[shopIndex].price;
                         //totalPriceBlock.Text = $"Totalt Pris: {totalPrice}kr";
-                        totalPriceBlock.Text = String.Format("Totalpris {0: ### ### ###}", totalPrice + " kr");
+                        totalPriceBlock.Text = String.Format("Totalpris {0: ### ### ###} kr", totalPrice);
                     }
                     foreach (KeyValuePair<string, int> key in cart.shoppingCart)
                     {
