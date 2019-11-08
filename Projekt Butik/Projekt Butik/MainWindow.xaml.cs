@@ -84,7 +84,7 @@ namespace Projekt_Butik
         //Grid and layout
         public void Start()
         {
-            Title = "Gitarr butik";
+            Title = "Gitarrbutik";
             Width = 1100;
             Height = 700;
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
