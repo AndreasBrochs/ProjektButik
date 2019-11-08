@@ -436,7 +436,7 @@ namespace Projekt_Butik
                         if (showCart.Items.Count > 0)
                         {
                             totalPrice -= pair.Value;
-                            totalPriceBlock.Text = $"Totalt Pris: {totalPrice}";
+                            totalPriceBlock.Text = String.Format("Totalpris: {0: ### ### ### ###)", totalPrice);
                             usedCodes.Add(discount.Text);
                             showCart.Items.Add(pair.Key);
                         }
