@@ -385,7 +385,6 @@ namespace Projekt_Butik
                         }
                     }
                 }
-
             }
 
             MessageBox.Show(buy + mark + receipt + mark + total + mark + date + mark + thanks);
