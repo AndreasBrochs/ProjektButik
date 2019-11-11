@@ -368,7 +368,6 @@ namespace Projekt_Butik
             string date = String.Format("Datum vid köp: {0}\n", DateTime.Now);
             int beforeDiscount = 0;
             
-            
             foreach (KeyValuePair<string, int> r in cart.shoppingCart)
             {
                 int price = productList.Where(p => p.info == r.Key).Select(p => p.price).First() * r.Value;
@@ -396,10 +395,10 @@ namespace Projekt_Butik
 
             MessageBox.Show(buy + mark + receipt + mark + total + mark + date + mark + thanks);
 
-            //if (File.Exists(CartFilePath))
-            //{
-            //    File.Delete(CartFilePath);
-            //}
+            if (File.Exists(CartFilePath))
+            {
+                File.Delete(CartFilePath);
+            }
         }
         private void DataGridProductClick(object sender, MouseEventArgs e)
         {
