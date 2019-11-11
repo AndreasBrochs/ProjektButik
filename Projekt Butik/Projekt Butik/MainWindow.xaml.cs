@@ -373,13 +373,27 @@ namespace Projekt_Butik
                 receipt += r.Key.ToString() + "\n" + "Antal: " + r.Value.ToString() + "  Pris: ";
                 receipt += String.Format("{0: ### ### ### ###} kr\n\n", price);
             }
+            if(usedCodes != null)
+            {
+                for(int i = 0; i < usedCodes.Count; i++)
+                {
+                    foreach(KeyValuePair<string, int> d in discountCodes)
+                    {
+                        if(d.Key == usedCodes[i])
+                        {
+                            receipt += "Rabatt\n" + d.Key + "     -" + d.Value + " kr\n\n";
+                        }
+                    }
+                }
+
+            }
 
             MessageBox.Show(buy + mark + receipt + mark + total + mark + date + mark + thanks);
 
-            if (File.Exists(CartFilePath))
-            {
-                File.Delete(CartFilePath);
-            }
+            //if (File.Exists(CartFilePath))
+            //{
+            //    File.Delete(CartFilePath);
+            //}
         }
         private void DataGridProductClick(object sender, MouseEventArgs e)
         {
