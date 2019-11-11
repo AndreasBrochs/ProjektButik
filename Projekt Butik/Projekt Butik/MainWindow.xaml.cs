@@ -476,7 +476,7 @@ namespace Projekt_Butik
             {
                 for (int i = 0; i <= usedCodes.Count; i++)
                 {
-                    usedCodes.Remove(usedCodes[i]);
+                    usedCodes.Remove(usedCodes[0]);
                 }
             }
             showCart.Items.Clear();
