@@ -92,7 +92,7 @@ namespace Projekt_Butik
             ControllsProductsInStore();
             ControllsCart();
             ControllsBuy();
-            LoadProducts();
+            LoadSavedCart();
         }
         public void BasicLayout()
         {
@@ -130,7 +130,7 @@ namespace Projekt_Butik
 
             dataTable = new DataTable();
             dataTable.Columns.AddRange(new DataColumn[3]
-            { new DataColumn ("Brand", typeof(string)), new DataColumn ("Info", typeof(string)), new DataColumn("Price", typeof(string))});
+            { new DataColumn ("Märke", typeof(string)), new DataColumn ("Modell", typeof(string)), new DataColumn("Pris", typeof(string))});
 
             for (int i = 0; i < productList.Count; i++)
             {
@@ -644,7 +644,7 @@ namespace Projekt_Butik
                 }
             }
         }
-        public void LoadProducts()
+        public void LoadSavedCart()
         {
             if (File.Exists(CartFilePath))
             {
