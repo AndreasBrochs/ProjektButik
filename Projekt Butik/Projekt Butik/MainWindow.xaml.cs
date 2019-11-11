@@ -249,7 +249,7 @@ namespace Projekt_Butik
 
             totalPriceBlock = new TextBlock
             {
-                Text = $"Totaltpris: {totalPrice} kr",
+                Text = $"Totalpris: {totalPrice} kr",
                 VerticalAlignment = VerticalAlignment.Center,
                 Width = 120,
                
@@ -331,13 +331,13 @@ namespace Projekt_Butik
                     {
                         cart.shoppingCart[temp] += shopAmount;
                         totalPrice += shopAmount * productlist[shopIndex].price;
-                        totalPriceBlock.Text = String.Format("Totalpris {0: ### ### ###} kr", totalPrice);
+                        totalPriceBlock.Text = String.Format("Totalpris: {0: ### ### ###} kr", totalPrice);
                     }
                     else
                     {
                         cart.shoppingCart.Add(temp, shopAmount);
                         totalPrice += shopAmount * productlist[shopIndex].price;
-                        totalPriceBlock.Text = String.Format("Totalpris {0: ### ### ###} kr", totalPrice);
+                        totalPriceBlock.Text = String.Format("Totalpris: {0: ### ### ###} kr", totalPrice);
                     }
                     foreach (KeyValuePair<string, int> key in cart.shoppingCart)
                     {
