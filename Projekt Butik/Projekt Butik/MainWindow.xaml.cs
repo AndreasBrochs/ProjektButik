@@ -63,10 +63,10 @@ namespace Projekt_Butik
                 }
             }
         }
-        private ImageSource imageSource;
-        private Image Image;
+        private ImageSource productImageSource;
+        private Image productImage;
 
-        public List<Product> productlist;
+        public List<Product> productList;
         public List<string> listBoxProducts;
         List<string> usedCodes = new List<string> { };
         public Dictionary<string, int> discountCodes;
@@ -132,9 +132,9 @@ namespace Projekt_Butik
             dataTable.Columns.AddRange(new DataColumn[3]
             { new DataColumn ("Brand", typeof(string)), new DataColumn ("Info", typeof(string)), new DataColumn("Price", typeof(string))});
 
-            for (int i = 0; i < productlist.Count; i++)
+            for (int i = 0; i < productList.Count; i++)
             {
-                dataTable.Rows.Add(new object[] { productlist[i].brand, productlist[i].info, String.Format("{0:### ###}", productlist[i].price) });
+                dataTable.Rows.Add(new object[] { productList[i].brand, productList[i].info, String.Format("{0:### ###}", productList[i].price) });
             };
 
             grid.Children.Add(dataGrid);
@@ -326,17 +326,17 @@ namespace Projekt_Butik
                 {
                     buy.IsEnabled = true;
                     showCart.Items.Clear();
-                    string temp = productlist[shopIndex].info;
+                    string temp = productList[shopIndex].info;
                     if (cart.shoppingCart.ContainsKey(temp))
                     {
                         cart.shoppingCart[temp] += shopAmount;
-                        totalPrice += shopAmount * productlist[shopIndex].price;
+                        totalPrice += shopAmount * productList[shopIndex].price;
                         totalPriceBlock.Text = String.Format("Totalpris: {0: ### ### ###} kr", totalPrice);
                     }
                     else
                     {
                         cart.shoppingCart.Add(temp, shopAmount);
-                        totalPrice += shopAmount * productlist[shopIndex].price;
+                        totalPrice += shopAmount * productList[shopIndex].price;
                         totalPriceBlock.Text = String.Format("Totalpris: {0: ### ### ###} kr", totalPrice);
                     }
                     foreach (KeyValuePair<string, int> key in cart.shoppingCart)
@@ -371,14 +371,13 @@ namespace Projekt_Butik
             
             foreach (KeyValuePair<string, int> r in cart.shoppingCart)
             {
-                int price = productlist.Where(p => p.info == r.Key).Select(p => p.price).First() * r.Value;
+                int price = productList.Where(p => p.info == r.Key).Select(p => p.price).First() * r.Value;
                 beforeDiscount += price;
                 receipt += r.Key.ToString() + "\n" + "Antal: " + r.Value.ToString() + "  Pris: ";
                 receipt += String.Format("{0: ### ### ### ###} kr\n\n", price);
             }
             if(usedCodes.Count != 0)
             {
-                
                 int totalDiscount = 0;
                 receipt += "Använda rabatter \n\n";
                 for(int i = 0; i < usedCodes.Count; i++)
@@ -393,7 +392,6 @@ namespace Projekt_Butik
                     }
                 }
                 receipt += "\nSumma innan rabatt: " + beforeDiscount +"\nSammanlagd rabbtt: " + totalDiscount + "\nSumma efter rabatt: " + TotalPrice +"\n";
-
             }
 
             MessageBox.Show(buy + mark + receipt + mark + total + mark + date + mark + thanks);
@@ -412,25 +410,25 @@ namespace Projekt_Butik
                 var temp = data.SelectedItem;
                 shopIndex = dataGrid.SelectedIndex;
 
-                imageSource = new BitmapImage(new Uri(productlist[data.SelectedIndex].soruce.ToString(), UriKind.Relative));
+                productImageSource = new BitmapImage(new Uri(productList[data.SelectedIndex].soruce.ToString(), UriKind.Relative));
 
-                grid.Children.Remove(Image);
+                grid.Children.Remove(productImage);
 
-                Image = new Image
+                productImage = new Image
                 {
-                    Source = imageSource,
+                    Source = productImageSource,
                     HorizontalAlignment = HorizontalAlignment.Stretch,
                     VerticalAlignment = VerticalAlignment.Stretch,
                     Margin = defaultMargin
                 };
 
-                grid.Children.Add(Image);
-                Grid.SetColumn(Image, 4);
-                Grid.SetRow(Image, 3);
-                Grid.SetColumn(Image, 2);
-                Grid.SetColumnSpan(Image, 2);
-                Grid.SetRow(Image, 2);
-                Grid.SetRowSpan(Image, 6);
+                grid.Children.Add(productImage);
+                Grid.SetColumn(productImage, 4);
+                Grid.SetRow(productImage, 3);
+                Grid.SetColumn(productImage, 2);
+                Grid.SetColumnSpan(productImage, 2);
+                Grid.SetRow(productImage, 2);
+                Grid.SetRowSpan(productImage, 6);
             }
         }
         private void Discount_Click(object sender, RoutedEventArgs e)
@@ -521,7 +519,7 @@ namespace Projekt_Butik
                 {
                     if (key.ToString() == remove)
                     {
-                        int price = productlist.Where(p => p.info.Contains(key.Key)).Select(p => p.price).First();
+                        int price = productList.Where(p => p.info.Contains(key.Key)).Select(p => p.price).First();
 
                         totalPrice -= key.Value * price;
                         cart.shoppingCart.Remove(key.Key);
@@ -606,7 +604,7 @@ namespace Projekt_Butik
         public void CreateProducts()
         {
             string[] path = File.ReadAllLines("productlist.txt");
-            productlist = new List<Product>();
+            productList = new List<Product>();
             for (int i = 0; i < path.Length; i++)
             {
                 string[] temp = path[i].Split(';');
@@ -631,7 +629,7 @@ namespace Projekt_Butik
                         price = int.Parse(temp[2]),
                         soruce = new BitmapImage(new Uri("/pics/error.jpg", UriKind.Relative))
                     };
-                    productlist.Add(p);
+                    productList.Add(p);
                 }
                 else
                 {
@@ -642,7 +640,7 @@ namespace Projekt_Butik
                         price = int.Parse(temp[2]),
                         soruce = new BitmapImage(new Uri("/pics/" + temp[3], UriKind.Relative))
                     };
-                    productlist.Add(p);
+                    productList.Add(p);
                 }
             }
         }
@@ -665,7 +663,7 @@ namespace Projekt_Butik
                     }
                     foreach (KeyValuePair<string, int> c in cart.shoppingCart)
                     {
-                        int getPrice = productlist.Where(p => p.info.Contains(c.Key)).Select(p => p.price).First();
+                        int getPrice = productList.Where(p => p.info.Contains(c.Key)).Select(p => p.price).First();
                         totalPrice += c.Value * getPrice;
 
                         showCart.Items.Add(c);
