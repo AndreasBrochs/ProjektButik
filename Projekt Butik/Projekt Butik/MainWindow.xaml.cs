@@ -364,27 +364,35 @@ namespace Projekt_Butik
             string thanks = "Tack för ditt köp, välkommen åter!\n";
             string mark = "-------------------------------------------\n";
             string receipt = "";
-            string total = String.Format("Totalsumma: {0: ### ### ### ###} kr\n", totalPrice);
+            string total = String.Format("Totalsumma att betala: {0: ### ### ### ###} kr\n", totalPrice);
             string date = String.Format("Datum vid köp: {0}\n", DateTime.Now);
+            int beforeDiscount = 0;
+            
             
             foreach (KeyValuePair<string, int> r in cart.shoppingCart)
             {
                 int price = productlist.Where(p => p.info == r.Key).Select(p => p.price).First() * r.Value;
+                beforeDiscount += price;
                 receipt += r.Key.ToString() + "\n" + "Antal: " + r.Value.ToString() + "  Pris: ";
                 receipt += String.Format("{0: ### ### ### ###} kr\n\n", price);
             }
-            if(usedCodes != null)
+            if(usedCodes.Count != 0)
             {
+                
+                int totalDiscount = 0;
+                receipt += "Använda rabatter \n\n";
                 for(int i = 0; i < usedCodes.Count; i++)
                 {
                     foreach(KeyValuePair<string, int> d in discountCodes)
                     {
                         if(d.Key == usedCodes[i])
                         {
-                            receipt += "Rabatt\n" + d.Key + "     -" + d.Value + " kr\n\n";
+                            receipt += d.Key + "     -" + d.Value + " kr\n";
+                            totalDiscount += d.Value;
                         }
                     }
                 }
+                receipt += "\nSumma innan rabatt: " + beforeDiscount +"\nSammanlagd rabbtt: " + totalDiscount + "\nSumma efter rabatt: " + TotalPrice +"\n";
 
             }
 
