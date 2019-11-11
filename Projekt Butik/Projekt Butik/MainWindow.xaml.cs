@@ -53,7 +53,8 @@ namespace Projekt_Butik
                 {
                     showCart.Items.Clear();
                     totalPrice = 0;
-                    totalPriceBlock.Text = $"Totalt Pris: {totalPrice}";
+                    TotalPrice = 0;
+                    totalPriceBlock.Text = "Totalpris: 0 kr";
                     for (int i = 0; i < usedCodes.Count; i++)
                     {
                         usedCodes.Remove(usedCodes[i]);
@@ -65,7 +66,6 @@ namespace Projekt_Butik
         private ImageSource imageSource;
         private Image Image;
 
-        public string test = new string(' ', 1000);
         public List<Product> productlist;
         public List<string> listBoxProducts;
         List<string> usedCodes = new List<string> { };
@@ -436,7 +436,7 @@ namespace Projekt_Butik
                         if (showCart.Items.Count > 0)
                         {
                             totalPrice -= pair.Value;
-                            totalPriceBlock.Text = String.Format("Totalpris: {0: ### ### ### ###)", totalPrice);
+                            totalPriceBlock.Text = String.Format("Totalpris: {0: ### ### ### ###} kr", totalPrice);
                             usedCodes.Add(discount.Text);
                             showCart.Items.Add(pair.Key);
                         }
@@ -456,7 +456,7 @@ namespace Projekt_Butik
         {
             cart.shoppingCart.Clear();
             totalPrice = 0;
-            totalPriceBlock.Text = $"Totalpris: {totalPrice} kr";
+            totalPriceBlock.Text = "Totalpris: 0 kr";
             if (usedCodes.Count > 0)
             {
                 for (int i = 0; i <= usedCodes.Count; i++)
@@ -532,6 +532,10 @@ namespace Projekt_Butik
                         totalPriceBlock.Text = string.Format("Totalpris: {0: ### ### ###} kr", totalPrice);
                         break;
                     }
+                }
+                if(totalPrice == 0)
+                {
+                    totalPriceBlock.Text = "Totalpris: 0 kr";
                 }
             }
             catch
