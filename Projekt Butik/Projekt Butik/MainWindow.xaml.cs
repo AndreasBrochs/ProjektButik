@@ -89,12 +89,10 @@ namespace Projekt_Butik
             Height = 700;
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
             BasicLayout();
-
             ControllsProductsInStore();
             ControllsCart();
             ControllsBuy();
             LoadProducts();
-
         }
         public void BasicLayout()
         {
@@ -203,7 +201,7 @@ namespace Projekt_Butik
         }
         public void ControllsBuy()
         {
-            wrapPanel = new WrapPanel //wrappanel for the discount
+            wrapPanel = new WrapPanel 
             {
                 Orientation = Orientation.Horizontal
             };
@@ -239,7 +237,7 @@ namespace Projekt_Butik
             };
             wrapPanel.Children.Add(addRemove);
             addRemove.Click += Discount_Click;
-            wrapPanel = new WrapPanel //wrappanel for the controlls under the cart, minus the discount
+            wrapPanel = new WrapPanel 
             {
                 Orientation = Orientation.Horizontal
             };
@@ -257,8 +255,6 @@ namespace Projekt_Butik
                
             };
             wrapPanel.Children.Add(totalPriceBlock);
-            
-            
 
             buy = new Button
             {
@@ -273,7 +269,7 @@ namespace Projekt_Butik
         }
         public void ControllsProductsInStore()
         {
-            wrapPanel = new WrapPanel //wrappanel for the controlls under the avaiable proucts
+            wrapPanel = new WrapPanel 
             {
                 Orientation = Orientation.Horizontal
             };
@@ -323,7 +319,6 @@ namespace Projekt_Butik
         //Buttons
         private void AddToCart_Click(object sender, RoutedEventArgs e)
         {
-
             try
             {
                 shopAmount = int.Parse(nrProducts.Text);
@@ -336,14 +331,12 @@ namespace Projekt_Butik
                     {
                         cart.shoppingCart[temp] += shopAmount;
                         totalPrice += shopAmount * productlist[shopIndex].price;
-                        //totalPriceBlock.Text = $"Totalt Pris: {totalPrice}kr";
                         totalPriceBlock.Text = String.Format("Totalpris {0: ### ### ###} kr", totalPrice);
                     }
                     else
                     {
                         cart.shoppingCart.Add(temp, shopAmount);
                         totalPrice += shopAmount * productlist[shopIndex].price;
-                        //totalPriceBlock.Text = $"Totalt Pris: {totalPrice}kr";
                         totalPriceBlock.Text = String.Format("Totalpris {0: ### ### ###} kr", totalPrice);
                     }
                     foreach (KeyValuePair<string, int> key in cart.shoppingCart)
@@ -382,11 +375,11 @@ namespace Projekt_Butik
             }
 
             MessageBox.Show(buy + mark + receipt + mark + total + mark + date + mark + thanks);
-            //Har kommenterat bort denna bara för att det skulle gå snabbare att kolla på kvittot hur det såg ut ;)
-            //if (File.Exists(CartFilePath))
-            //{
-            //    File.Delete(CartFilePath);
-            //}
+
+            if (File.Exists(CartFilePath))
+            {
+                File.Delete(CartFilePath);
+            }
         }
         private void DataGridProductClick(object sender, MouseEventArgs e)
         {
@@ -480,7 +473,7 @@ namespace Projekt_Butik
             }
             catch
             {
-                MessageBox.Show("You must enter a number");
+                MessageBox.Show("Du måste skriva in en siffra");
             }
         }
         private void PlusProduct_Click(object sender, RoutedEventArgs e)
@@ -493,7 +486,7 @@ namespace Projekt_Butik
             }
             catch
             {
-                MessageBox.Show("You must enter a number");
+                MessageBox.Show("Du måste skriva in en siffra");
             }
         }
         private void RemoveProduct_Click(object sender, RoutedEventArgs e)
@@ -511,7 +504,6 @@ namespace Projekt_Butik
                         totalPrice -= key.Value * price;
                         cart.shoppingCart.Remove(key.Key);
                         showCart.Items.Remove(showCart.SelectedItem);
-                        //totalPriceBlock.Text = $"Totaltpris: {totalPrice}";
                         totalPriceBlock.Text = string.Format("Totalpris: {0: ### ### ###} kr", totalPrice);
                         if (showCart.Items.IsEmpty)
                         {
@@ -528,7 +520,6 @@ namespace Projekt_Butik
                         totalPrice += pair.Value;
                         usedCodes.Remove(pair.Key);
                         showCart.Items.Remove(showCart.SelectedItem);
-                        //totalPriceBlock.Text = $"Totalt Pris: {totalPrice}";
                         totalPriceBlock.Text = string.Format("Totalpris: {0: ### ### ###} kr", totalPrice);
                         break;
                     }
@@ -654,7 +645,6 @@ namespace Projekt_Butik
                         showCart.Items.Add(c);
                     }
                     buy.IsEnabled = true;
-                    //totalPriceBlock.Text = $"Totalt Pris: {totalPrice}kr";
                     totalPriceBlock.Text = string.Format("Totalpris: {0: ### ### ###} kr", totalPrice);
                 }
             }
