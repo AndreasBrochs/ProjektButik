@@ -223,7 +223,7 @@ namespace Projekt_Butik
                 Text = "Skriv kod",
                 Margin = defaultMargin,
                 Padding = defaultMargin,
-                Width = 75 //to keep the box the same size when writing in it
+                Width = 75
             };
             wrapPanel.Children.Add(discount);
             discount.SelectAll();
