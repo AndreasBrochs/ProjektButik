@@ -528,7 +528,7 @@ namespace Projekt_Butik
                         {
                             buy.IsEnabled = false;
                         }
-                        break;
+                       // break;
                     }
                 }
                 foreach (KeyValuePair<string, int> pair in discountCodes)
